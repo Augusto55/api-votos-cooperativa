@@ -11,3 +11,4 @@ Contabilizar os votos e dar o resultado da votação na pauta.
 Para fins de exercício, a segurança das interfaces pode ser abstraída e qualquer chamada para as interfaces pode ser considerada como autorizada. A escolha da linguagem, frameworks e bibliotecas é livre (desde que não infrinja direitos de uso).
 
 É importante que as pautas e os votos sejam persistidos e que não sejam perdidos com o restart da aplicação.
+teste
