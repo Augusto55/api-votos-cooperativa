@@ -1,6 +1,10 @@
 package br.com.meta.apivotoscooperativa.model;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import org.antlr.v4.runtime.misc.NotNull;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Table
 @Entity
@@ -10,9 +14,13 @@ public class Pauta {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @Column(nullable = false)
     private String titulo;
+    @Column(nullable = false)
     private String descricao;
-    private String resultadoSessao;
+
+    @Column(name="resultadoSessao")
+    private String resultadoSessao = "Em votação";
 
     public Pauta() {
     }
