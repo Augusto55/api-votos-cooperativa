@@ -21,6 +21,11 @@ public class Pauta {
     @Enumerated(EnumType.STRING)
     private enums.PautaStatus resultadoSessao = enums.PautaStatus.PENDENTE;
 
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "sessao_votacao_id", referencedColumnName = "id")
+    private SessaoVotacao sessaoVotacao;
+
     public Pauta() {
     }
 
@@ -61,5 +66,13 @@ public class Pauta {
 
     public void setResultadoSessao(enums.PautaStatus resultadoSessao) {
         this.resultadoSessao = resultadoSessao;
+    }
+
+    public SessaoVotacao getSessaoVotacao() {
+        return sessaoVotacao;
+    }
+
+    public void setSessaoVotacao(SessaoVotacao sessaoVotacao) {
+        this.sessaoVotacao = sessaoVotacao;
     }
 }

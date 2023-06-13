@@ -3,7 +3,7 @@ package br.com.meta.apivotoscooperativa.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table
+@Table(name = "sessao_votacao")
 public class SessaoVotacao {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -13,7 +13,14 @@ public class SessaoVotacao {
     private Integer votosNao;
     private String expireTime;
 
+    @OneToOne(mappedBy = "sessaoVotacao")
+    private Pauta pauta;
+
     public SessaoVotacao() {
+    }
+
+    public SessaoVotacao(String expireTime) {
+        this.expireTime = expireTime;
     }
 
     public SessaoVotacao(Integer id, Integer votosTotal, Integer votosSim, Integer votosNao, String expireTime) {
@@ -62,5 +69,13 @@ public class SessaoVotacao {
 
     public void setExpireTime(String expireTime) {
         this.expireTime = expireTime;
+    }
+
+    public Pauta getPauta() {
+        return pauta;
+    }
+
+    public void setPauta(Pauta pauta) {
+        this.pauta = pauta;
     }
 }
