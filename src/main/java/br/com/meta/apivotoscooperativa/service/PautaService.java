@@ -29,7 +29,7 @@ public class PautaService {
         String descricao = pauta.getDescricao();
 
         if (titulo == null || descricao == null) {
-            throw new InvalidPautaException("O título e a descrição não podem ser nulos.");
+            throw new InvalidPautaException("O título ou descrição não podem ser nulos.");
         }
 
         int tituloLength = titulo.trim().length();

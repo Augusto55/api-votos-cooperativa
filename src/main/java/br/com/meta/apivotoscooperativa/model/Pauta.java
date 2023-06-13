@@ -1,10 +1,8 @@
 package br.com.meta.apivotoscooperativa.model;
 
-import jakarta.annotation.Nullable;
+import br.com.meta.apivotoscooperativa.commons.enums;
 import jakarta.persistence.*;
-import org.antlr.v4.runtime.misc.NotNull;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+
 
 @Table
 @Entity
@@ -20,12 +18,13 @@ public class Pauta {
     private String descricao;
 
     @Column(name="resultadoSessao")
-    private String resultadoSessao = "Em votação";
+    @Enumerated(EnumType.STRING)
+    private enums.PautaStatus resultadoSessao = enums.PautaStatus.PENDENTE;
 
     public Pauta() {
     }
 
-    public Pauta(Integer id, String titulo, String descricao, String resultadoSessao) {
+    public Pauta(Integer id, String titulo, String descricao, enums.PautaStatus  resultadoSessao) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
@@ -56,11 +55,11 @@ public class Pauta {
         this.descricao = descricao;
     }
 
-    public String getResultadoSessao() {
+    public enums.PautaStatus getResultadoSessao() {
         return resultadoSessao;
     }
 
-    public void setResultadoSessao(String resultadoSessao) {
+    public void setResultadoSessao(enums.PautaStatus resultadoSessao) {
         this.resultadoSessao = resultadoSessao;
     }
 }
