@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpServerErrorException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -31,6 +32,22 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneralException(Exception e) {
         logger.error("Unexpected error: ", e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
+
+    @ExceptionHandler(HttpServerErrorException.InternalServerError.class)
+    public ResponseEntity<String> handleInternalServerError(HttpServerErrorException.InternalServerError e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+
+    @ExceptionHandler(HttpServerErrorException.NotImplemented.class)
+    public ResponseEntity<String> handleNotImplementedError(HttpServerErrorException.NotImplemented e) {
+        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(e.getMessage());
+    }
+
+    @ExceptionHandler(PautaNotFoundException.class)
+    public ResponseEntity<String> handlePautaNotFoundException(PautaNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
 }
