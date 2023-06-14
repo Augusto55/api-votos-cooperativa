@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Table
 @Entity
@@ -12,7 +15,7 @@ import jakarta.persistence.*;
 public class Pauta {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
@@ -25,9 +28,8 @@ public class Pauta {
     private enums.PautaStatus resultadoSessao = enums.PautaStatus.PENDENTE;
 
     @JsonManagedReference
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "sessao_votacao_id", referencedColumnName = "id")
-    private SessaoVotacao sessaoVotacao;
+    @OneToMany(mappedBy = "pauta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SessaoVotacao> sessaoVotacao = new ArrayList<>();
 
     public Pauta() {
     }
@@ -71,12 +73,14 @@ public class Pauta {
         this.resultadoSessao = resultadoSessao;
     }
 
-    public SessaoVotacao getSessaoVotacao() {
-        return sessaoVotacao;
+    public void addSessaoVotacao(SessaoVotacao sessao) {
+        sessaoVotacao.add(sessao);
+        sessao.setPauta(this);
     }
 
-    public void setSessaoVotacao(SessaoVotacao sessaoVotacao) {
-        this.sessaoVotacao = sessaoVotacao;
+    public void removeSessaoVotacao(SessaoVotacao sessao) {
+        sessaoVotacao.remove(sessao);
+        sessao.setPauta(null);
     }
 
 }
