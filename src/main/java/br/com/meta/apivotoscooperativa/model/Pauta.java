@@ -17,10 +17,9 @@ public class Pauta {
     @Column(nullable = false)
     private String descricao;
 
-    @Column(name="resultadoSessao")
+    @Column(name = "resultadoSessao")
     @Enumerated(EnumType.STRING)
     private enums.PautaStatus resultadoSessao = enums.PautaStatus.PENDENTE;
-
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "sessao_votacao_id", referencedColumnName = "id")
@@ -29,7 +28,7 @@ public class Pauta {
     public Pauta() {
     }
 
-    public Pauta(Integer id, String titulo, String descricao, enums.PautaStatus  resultadoSessao) {
+    public Pauta(Integer id, String titulo, String descricao, enums.PautaStatus resultadoSessao) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
@@ -75,4 +74,5 @@ public class Pauta {
     public void setSessaoVotacao(SessaoVotacao sessaoVotacao) {
         this.sessaoVotacao = sessaoVotacao;
     }
+
 }

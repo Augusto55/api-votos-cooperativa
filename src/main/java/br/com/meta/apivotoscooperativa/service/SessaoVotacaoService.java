@@ -17,7 +17,7 @@ public class SessaoVotacaoService {
         return sessaoVotacaoRepository.findAll();
     }
 
-    public void saveSessaoVotacao(SessaoVotacao sessaoVotacao){
-        sessaoVotacaoRepository.save(sessaoVotacao);
+    public SessaoVotacao saveSessaoVotacao(SessaoVotacao sessaoVotacao){
+        return sessaoVotacaoRepository.save(sessaoVotacao);
     }
 }

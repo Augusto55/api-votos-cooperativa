@@ -6,14 +6,14 @@ import jakarta.persistence.*;
 @Table(name = "sessao_votacao")
 public class SessaoVotacao {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer votosTotal;
     private Integer votosSim;
     private Integer votosNao;
     private String expireTime;
 
-    @OneToOne(mappedBy = "sessaoVotacao")
+    @OneToOne(mappedBy = "sessaoVotacao", cascade = CascadeType.ALL)
     private Pauta pauta;
 
     public SessaoVotacao() {
@@ -78,4 +78,5 @@ public class SessaoVotacao {
     public void setPauta(Pauta pauta) {
         this.pauta = pauta;
     }
+
 }

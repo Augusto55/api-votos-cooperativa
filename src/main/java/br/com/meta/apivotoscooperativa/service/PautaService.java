@@ -17,7 +17,7 @@ public class PautaService {
         return pautaRepository.findAll();
     }
 
-    public Pauta acharPorId(Integer id){
+    public Pauta findById(Integer id){
         return pautaRepository.getReferenceById(id);
     }
     public void savePauta(Pauta pauta) {
