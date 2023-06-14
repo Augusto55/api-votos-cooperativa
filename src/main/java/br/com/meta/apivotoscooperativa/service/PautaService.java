@@ -1,6 +1,7 @@
 package br.com.meta.apivotoscooperativa.service;
 
 import br.com.meta.apivotoscooperativa.exception.InvalidPautaException;
+import br.com.meta.apivotoscooperativa.exception.PautaNotFoundException;
 import br.com.meta.apivotoscooperativa.model.Pauta;
 import br.com.meta.apivotoscooperativa.model.SessaoVotacao;
 import br.com.meta.apivotoscooperativa.repository.PautaRepository;
@@ -19,7 +20,9 @@ public class PautaService {
     }
 
     public Pauta findById(Integer id) {
-        return pautaRepository.getReferenceById(id);
+        return pautaRepository.findById(id).orElseThrow(
+                () -> new PautaNotFoundException("Pauta with id " + id + " was not found.")
+        );
     }
 
     public void savePauta(Pauta pauta) {
@@ -49,8 +52,8 @@ public class PautaService {
         }
     }
 
-    public void setSessaoVotacao(Pauta pauta, SessaoVotacao sessaoVotacao) {
-        pauta.setSessaoVotacao(sessaoVotacao);
+    public void addSessaoVotacao(Pauta pauta, SessaoVotacao sessaoVotacao) {
+        pauta.addSessaoVotacao(sessaoVotacao);
         pautaRepository.save(pauta);
     }
 }

@@ -5,7 +5,6 @@ import br.com.meta.apivotoscooperativa.model.Pauta;
 import br.com.meta.apivotoscooperativa.model.SessaoVotacao;
 import br.com.meta.apivotoscooperativa.service.PautaService;
 import br.com.meta.apivotoscooperativa.service.SessaoVotacaoService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,22 +25,32 @@ public class SessaoVotacaoController {
     }
 
     @PostMapping("/")
-    @Transactional
     public ResponseEntity<Object> criarSessao(@RequestParam Integer pautaId, @RequestBody SessaoVotacao sessao) {
+        Pauta pauta;
         try {
-            Pauta pauta = pautaService.findById(pautaId);
-            if (pauta == null) {
-                throw new PautaNotFoundException("Pauta com id " + pautaId + " não foi encontrada.");
-            }
-            sessao.setPauta(pauta);
-            SessaoVotacao sessaoSalva = sessaoVotacaoService.saveSessaoVotacao(sessao);
-            pautaService.setSessaoVotacao(pauta, sessaoSalva);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Pauta adicionada com sucesso.\nId da pauta: " + sessaoSalva.getId());
+            pauta = pautaService.findById(pautaId);
         } catch (PautaNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            // For any other unexpected exceptions, let's return a 500 status
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Pauta com id " + pautaId + " não foi encontrada.");
         }
+
+        return sessaoVotacaoService.createSessao(pauta, sessao);
     }
+
+
+
+    @PutMapping("/{sessaoId}")
+    public ResponseEntity<String> openSessao(@PathVariable Integer sessaoId) {
+        SessaoVotacao sessao;
+        try {
+            sessao = sessaoVotacaoService.findById(sessaoId);
+            if (sessao == null) {
+                throw new PautaNotFoundException("SessaoVotacao with id " + sessaoId + " was not found.");
+            }
+        } catch (PautaNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+
+        return sessaoVotacaoService.updateSessao(sessaoId, sessao);
+    }
+
 }
