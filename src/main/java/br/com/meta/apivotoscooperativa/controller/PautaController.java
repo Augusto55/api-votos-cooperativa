@@ -22,7 +22,7 @@ public class PautaController {
 
     private static final Logger logger = LoggerFactory.getLogger(PautaController.class);
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<?> listarPautas() {
         try {
             Iterable<Pauta> pautas = pautaService.listAllPautas();
