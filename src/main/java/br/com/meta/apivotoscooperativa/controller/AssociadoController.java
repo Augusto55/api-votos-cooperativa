@@ -22,12 +22,8 @@ public class AssociadoController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> salvarAssociado(@Valid @RequestBody Associado associado){
-        try {
-            associadoService.saveAssociado(associado);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Associado cadastrado com sucesso.");}
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nâo foi possível cadastrar o usuário.");
-        }
+    public ResponseEntity<?> salvarAssociado(@Valid @RequestBody Associado associado) {
+        associadoService.saveAssociado(associado);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Associado cadastrado com sucesso.");
     }
 }
