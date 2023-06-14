@@ -2,6 +2,7 @@ package br.com.meta.apivotoscooperativa.model;
 
 import br.com.meta.apivotoscooperativa.commons.enums;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 
@@ -23,6 +24,7 @@ public class Pauta {
     @Enumerated(EnumType.STRING)
     private enums.PautaStatus resultadoSessao = enums.PautaStatus.PENDENTE;
 
+    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "sessao_votacao_id", referencedColumnName = "id")
     private SessaoVotacao sessaoVotacao;

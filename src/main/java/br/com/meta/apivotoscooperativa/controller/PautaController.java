@@ -2,9 +2,7 @@ package br.com.meta.apivotoscooperativa.controller;
 
 import br.com.meta.apivotoscooperativa.commons.enums;
 import br.com.meta.apivotoscooperativa.model.Pauta;
-import br.com.meta.apivotoscooperativa.model.SessaoVotacao;
 import br.com.meta.apivotoscooperativa.service.PautaService;
-import br.com.meta.apivotoscooperativa.service.SessaoVotacaoService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

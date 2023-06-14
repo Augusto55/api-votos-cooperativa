@@ -1,9 +1,13 @@
 package br.com.meta.apivotoscooperativa.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "sessao_votacao")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class SessaoVotacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,6 +17,7 @@ public class SessaoVotacao {
     private Integer votosNao;
     private String expireTime;
 
+    @JsonBackReference
     @OneToOne(mappedBy = "sessaoVotacao", cascade = CascadeType.ALL)
     private Pauta pauta;
 

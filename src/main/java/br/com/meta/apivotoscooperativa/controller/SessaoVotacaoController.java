@@ -27,7 +27,9 @@ public class SessaoVotacaoController {
         Pauta pauta = pautaService.findById(pautaId);
         if (pauta != null) {
             sessao.setPauta(pauta);
-            return ResponseEntity.ok(sessaoVotacaoService.saveSessaoVotacao(sessao));
+            SessaoVotacao sessaoSalva = sessaoVotacaoService.saveSessaoVotacao(sessao);
+            pautaService.setSessaoVotacao(pauta, sessaoSalva);
+            return ResponseEntity.ok(sessaoSalva);
         } else {
             return ResponseEntity.badRequest().build();
         }
