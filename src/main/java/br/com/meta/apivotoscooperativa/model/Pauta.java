@@ -1,11 +1,14 @@
 package br.com.meta.apivotoscooperativa.model;
 
 import br.com.meta.apivotoscooperativa.commons.enums;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 
 @Table
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Pauta {
 
     @Id
@@ -17,11 +20,11 @@ public class Pauta {
     @Column(nullable = false)
     private String descricao;
 
-    @Column(name="resultadoSessao")
+    @Column(name = "resultadoSessao")
     @Enumerated(EnumType.STRING)
     private enums.PautaStatus resultadoSessao = enums.PautaStatus.PENDENTE;
 
-
+    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "sessao_votacao_id", referencedColumnName = "id")
     private SessaoVotacao sessaoVotacao;
@@ -29,7 +32,7 @@ public class Pauta {
     public Pauta() {
     }
 
-    public Pauta(Integer id, String titulo, String descricao, enums.PautaStatus  resultadoSessao) {
+    public Pauta(Integer id, String titulo, String descricao, enums.PautaStatus resultadoSessao) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
@@ -75,4 +78,5 @@ public class Pauta {
     public void setSessaoVotacao(SessaoVotacao sessaoVotacao) {
         this.sessaoVotacao = sessaoVotacao;
     }
+
 }

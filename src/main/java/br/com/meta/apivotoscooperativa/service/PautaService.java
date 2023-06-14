@@ -2,6 +2,7 @@ package br.com.meta.apivotoscooperativa.service;
 
 import br.com.meta.apivotoscooperativa.exception.InvalidPautaException;
 import br.com.meta.apivotoscooperativa.model.Pauta;
+import br.com.meta.apivotoscooperativa.model.SessaoVotacao;
 import br.com.meta.apivotoscooperativa.repository.PautaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,12 @@ public class PautaService {
         return pautaRepository.findAll();
     }
 
-    public Pauta acharPorId(Integer id){
+    public Pauta findById(Integer id) {
         return pautaRepository.getReferenceById(id);
     }
+
     public void savePauta(Pauta pauta) {
-            pautaRepository.save(pauta);
+        pautaRepository.save(pauta);
     }
 
     public void isValidPauta(Pauta pauta) throws InvalidPautaException {
@@ -47,5 +49,8 @@ public class PautaService {
         }
     }
 
-
+    public void setSessaoVotacao(Pauta pauta, SessaoVotacao sessaoVotacao) {
+        pauta.setSessaoVotacao(sessaoVotacao);
+        pautaRepository.save(pauta);
+    }
 }
