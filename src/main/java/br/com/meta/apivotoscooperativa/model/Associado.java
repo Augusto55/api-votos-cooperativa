@@ -11,8 +11,7 @@ public class Associado {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Size(min = 3, max = 30, message = "O nome do associado deve ter entre 3 e 30 caracteres")
-    @Column(nullable = false)
+
     private String nome;
 
     public Associado() {
@@ -21,6 +20,11 @@ public class Associado {
     public Associado(Integer id, String nome) {
         this.id = id;
         this.nome = nome;
+    }
+
+    public Associado(AssociadoDto associadoDto) {
+        this.id = associadoDto.id();
+        this.nome = associadoDto.nome();
     }
 
     public Integer getId() {

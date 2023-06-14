@@ -1,6 +1,7 @@
 package br.com.meta.apivotoscooperativa.controller;
 
 import br.com.meta.apivotoscooperativa.model.Associado;
+import br.com.meta.apivotoscooperativa.model.AssociadoDto;
 import br.com.meta.apivotoscooperativa.service.AssociadoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class AssociadoController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> salvarAssociado(@Valid @RequestBody Associado associado) {
+    public ResponseEntity<?> salvarAssociado(@Valid @RequestBody AssociadoDto associado) {
         associadoService.saveAssociado(associado);
         return ResponseEntity.status(HttpStatus.CREATED).body("Associado cadastrado com sucesso.");
     }

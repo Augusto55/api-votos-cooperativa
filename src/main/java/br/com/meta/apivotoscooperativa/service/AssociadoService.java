@@ -1,6 +1,7 @@
 package br.com.meta.apivotoscooperativa.service;
 
 import br.com.meta.apivotoscooperativa.model.Associado;
+import br.com.meta.apivotoscooperativa.model.AssociadoDto;
 import br.com.meta.apivotoscooperativa.repository.AssociadoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,8 @@ public class AssociadoService {
         return associadoRepository.findAll();
     }
 
-    public void saveAssociado(Associado associado){
-        associadoRepository.save(associado);
+    @Transactional
+    public void saveAssociado(AssociadoDto associado){
+        associadoRepository.save(new Associado(associado));
     }
 }
