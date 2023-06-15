@@ -1,5 +1,6 @@
 package br.com.meta.apivotoscooperativa.controller;
 
+import br.com.meta.apivotoscooperativa.dto.SessaoVotacaoRegisterDto;
 import br.com.meta.apivotoscooperativa.exception.PautaNotFoundException;
 import br.com.meta.apivotoscooperativa.model.Associado;
 import br.com.meta.apivotoscooperativa.model.AssociadoSessaoVotacao;
@@ -35,8 +36,9 @@ public class SessaoVotacaoController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Object> criarSessao(@RequestParam Integer pautaId, @RequestBody SessaoVotacao sessao) {
+    public ResponseEntity<Object> criarSessao(@RequestParam Integer pautaId, @RequestBody SessaoVotacaoRegisterDto sessaoVotacaoRegisterDto) {
         Pauta pauta;
+        SessaoVotacao sessao = new SessaoVotacao(sessaoVotacaoRegisterDto);
         try {
             pauta = pautaService.findById(pautaId);
         } catch (PautaNotFoundException e) {
