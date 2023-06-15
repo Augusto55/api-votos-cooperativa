@@ -1,6 +1,7 @@
 package br.com.meta.apivotoscooperativa.controller;
 
 import br.com.meta.apivotoscooperativa.dto.SessaoVotacaoRegisterDto;
+import br.com.meta.apivotoscooperativa.dto.SessaoVotacaoVoteDto;
 import br.com.meta.apivotoscooperativa.exception.PautaNotFoundException;
 import br.com.meta.apivotoscooperativa.model.Associado;
 import br.com.meta.apivotoscooperativa.model.AssociadoSessaoVotacao;
@@ -10,6 +11,7 @@ import br.com.meta.apivotoscooperativa.repository.AssociadoSessaoVotacaoReposito
 import br.com.meta.apivotoscooperativa.service.AssociadoService;
 import br.com.meta.apivotoscooperativa.service.PautaService;
 import br.com.meta.apivotoscooperativa.service.SessaoVotacaoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,8 +65,10 @@ public class SessaoVotacaoController {
     @PostMapping("/{sessaoId}/votar")
     public ResponseEntity<String> votarNaSessao(
             @PathVariable Integer sessaoId,
-            @RequestParam Integer associadoId,
-            @RequestParam Boolean voto) {
+            @Valid @RequestBody SessaoVotacaoVoteDto sessaoVotacaoVoteDto) {
+
+        Integer associadoId = sessaoVotacaoVoteDto.associadoId();
+        Boolean voto = sessaoVotacaoVoteDto.voto();
 
         try {
             SessaoVotacao sessao = sessaoVotacaoService.findById(sessaoId);
