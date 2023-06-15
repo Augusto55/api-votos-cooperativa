@@ -1,4 +1,4 @@
-package br.com.meta.apivotoscooperativa.model;
+package br.com.meta.apivotoscooperativa.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
