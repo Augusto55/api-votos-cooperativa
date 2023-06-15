@@ -30,7 +30,7 @@ public class SessaoVotacaoController {
     AssociadoSessaoVotacaoRepository associadoSessaoVotacaoRepository;
 
     @GetMapping("")
-    Iterable<SessaoVotacao> listarSessoes() {
+    public Iterable<SessaoVotacao> listarSessoes() {
         return sessaoVotacaoService.listAllSessoes();
     }
 
@@ -67,6 +67,10 @@ public class SessaoVotacaoController {
         try {
             SessaoVotacao sessao = sessaoVotacaoService.findById(sessaoId);
             Associado associado = associadoService.findById(associadoId);
+
+            if (associado == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("O associado não está cadastrado");
+            }
 
             if (sessaoVotacaoService.isSessaoExpired(sessao) || !sessaoVotacaoService.isSessaoOpen(sessao)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("SessaoVotacao with id " + sessaoId + " is closed.");
