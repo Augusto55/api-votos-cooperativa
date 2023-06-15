@@ -1,8 +1,12 @@
 package br.com.meta.apivotoscooperativa.controller;
 
 import br.com.meta.apivotoscooperativa.exception.PautaNotFoundException;
+import br.com.meta.apivotoscooperativa.model.Associado;
+import br.com.meta.apivotoscooperativa.model.AssociadoSessaoVotacao;
 import br.com.meta.apivotoscooperativa.model.Pauta;
 import br.com.meta.apivotoscooperativa.model.SessaoVotacao;
+import br.com.meta.apivotoscooperativa.repository.AssociadoSessaoVotacaoRepository;
+import br.com.meta.apivotoscooperativa.service.AssociadoService;
 import br.com.meta.apivotoscooperativa.service.PautaService;
 import br.com.meta.apivotoscooperativa.service.SessaoVotacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,12 @@ public class SessaoVotacaoController {
 
     @Autowired
     PautaService pautaService;
+
+    @Autowired
+    AssociadoService associadoService;
+
+    @Autowired
+    AssociadoSessaoVotacaoRepository associadoSessaoVotacaoRepository;
 
     @GetMapping("")
     Iterable<SessaoVotacao> listarSessoes() {
@@ -36,21 +46,48 @@ public class SessaoVotacaoController {
         return sessaoVotacaoService.createSessao(pauta, sessao);
     }
 
-
-
     @PutMapping("/{sessaoId}")
     public ResponseEntity<String> openSessao(@PathVariable Integer sessaoId) {
-        SessaoVotacao sessao;
         try {
-            sessao = sessaoVotacaoService.findById(sessaoId);
-            if (sessao == null) {
-                throw new PautaNotFoundException("SessaoVotacao with id " + sessaoId + " was not found.");
-            }
+            SessaoVotacao  sessao = sessaoVotacaoService.findById(sessaoId);
+            return sessaoVotacaoService.updateSessao(sessaoId, sessao);
+
         } catch (PautaNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
 
-        return sessaoVotacaoService.updateSessao(sessaoId, sessao);
+    }
+
+    @PostMapping("/{sessaoId}/votar")
+    public ResponseEntity<String> votarNaSessao(
+            @PathVariable Integer sessaoId,
+            @RequestParam Integer associadoId,
+            @RequestParam Boolean voto) {
+
+        try {
+            SessaoVotacao sessao = sessaoVotacaoService.findById(sessaoId);
+            Associado associado = associadoService.findById(associadoId);
+
+            if (sessaoVotacaoService.isSessaoExpired(sessao) || !sessaoVotacaoService.isSessaoOpen(sessao)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("SessaoVotacao with id " + sessaoId + " is closed.");
+            }
+
+            boolean hasVoted = associadoSessaoVotacaoRepository.existsByAssociadoAndSessaoVotacao(associado, sessao);
+            if (hasVoted) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Associado with id " + associadoId +
+                        " has already voted in SessaoVotacao with id " + sessaoId);
+            }
+
+            sessaoVotacaoService.addVoto(sessao, voto);
+            AssociadoSessaoVotacao associadoSessaoVotacao = new AssociadoSessaoVotacao(associado, sessao);
+            associadoSessaoVotacaoRepository.save(associadoSessaoVotacao);
+
+            return ResponseEntity.ok("Vote registered successfully.");
+        } catch (PautaNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while voting in SessaoVotacao with id " + sessaoId);
+        }
     }
 
 }

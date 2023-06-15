@@ -72,24 +72,24 @@ public class SessaoVotacao {
         return votosTotal;
     }
 
-    public void setVotosTotal(Integer votosTotal) {
-        this.votosTotal = votosTotal;
+    public void setVotosTotal() {
+        this.votosTotal = this.votosTotal + 1;
     }
 
     public Integer getVotosSim() {
         return votosSim;
     }
 
-    public void setVotosSim(Integer votosSim) {
-        this.votosSim = votosSim;
+    public void setVotosSim() {
+        this.votosSim =  this.votosSim + 1;
     }
 
     public Integer getVotosNao() {
         return votosNao;
     }
 
-    public void setVotosNao(Integer votosNao) {
-        this.votosNao = votosNao;
+    public void setVotosNao() {
+        this.votosNao =this.votosNao + 1;
     }
 
     public Duration getDuration() {
@@ -131,6 +131,10 @@ public class SessaoVotacao {
 
     public Integer getPautaId() {
         return pautaId;
+    }
+
+    public boolean isExpired() {
+        return new Date().after(this.expireAt);
     }
 
 }

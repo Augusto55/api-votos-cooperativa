@@ -60,4 +60,22 @@ public class SessaoVotacaoService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in change SessaoVotacao " + sessaoId + " status.");
         }
     }
+
+    public boolean isSessaoOpen(SessaoVotacao sessao) {
+        return sessao.getIsOpen();
+    }
+
+    public boolean isSessaoExpired(SessaoVotacao sessao) {
+        return sessao.isExpired();
+    }
+
+    public void addVoto(SessaoVotacao sessao, boolean voto) {
+        if (voto) {
+            sessao.setVotosSim();
+        } else {
+            sessao.setVotosNao();
+        }
+        sessao.setVotosTotal();
+        saveSessaoVotacao(sessao);
+    }
 }
