@@ -1,5 +1,6 @@
 package br.com.meta.apivotoscooperativa.model;
 
+import br.com.meta.apivotoscooperativa.dto.SessaoVotacaoRegisterDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -24,7 +25,7 @@ public class SessaoVotacao {
     @Column(nullable = false)
     private Integer votosNao = 0;
 
-    @Column(nullable = false)
+
     private Integer duration = 1;
 
 
@@ -46,8 +47,8 @@ public class SessaoVotacao {
     public SessaoVotacao() {
     }
 
-    public SessaoVotacao(Integer duration) {
-        this.duration = duration;
+    public SessaoVotacao(SessaoVotacaoRegisterDto sessaoVotacaoRegisterDto) {
+        this.duration = sessaoVotacaoRegisterDto.duracao();
     }
 
     public SessaoVotacao(Integer id, Integer votosTotal, Integer votosSim, Integer votosNao, Integer duration, Boolean isOpen, Date expireAt) {
@@ -59,6 +60,10 @@ public class SessaoVotacao {
         this.isOpen = isOpen;
         this.expireAt = expireAt;
     }
+
+
+
+
 
     public Integer getId() {
         return id;
