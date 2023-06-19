@@ -83,4 +83,11 @@ public class SessaoVotacaoService {
         sessao.setVotosTotal();
         saveSessaoVotacao(sessao);
     }
+
+    public String showResultado(SessaoVotacao sessao) {
+        Pauta pauta = pautaService.findById(sessao.getPautaId());
+        return "SessaoVotacao " + sessao.getId() + " da pauta " + pauta.getTitulo() + " encerrada.\n" +
+                "Votos Sim: " + sessao.getVotosSim() + "\n" +
+                "Votos Nao: " + sessao.getVotosNao() + "\n" +
+                "Votos Total: " + sessao.getVotosTotal();}
 }

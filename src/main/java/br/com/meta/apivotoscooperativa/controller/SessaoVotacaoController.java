@@ -94,4 +94,17 @@ public class SessaoVotacaoController {
         }
     }
 
+    @PutMapping("/{sessaoId}/resultado")
+    public ResponseEntity<String> mostrarResultado(@PathVariable Integer sessaoId) {
+        try {
+            SessaoVotacao sessao = sessaoVotacaoService.findById(sessaoId);
+            String resultado = sessaoVotacaoService.showResultado(sessao);
+            return ResponseEntity.ok(resultado);
+        } catch (PautaNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while retrieving result for SessaoVotacao with id " + sessaoId);
+        }
+    }
+
 }
