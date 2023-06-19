@@ -66,7 +66,12 @@ public class SessaoVotacaoService {
     }
 
     public boolean isSessaoExpired(SessaoVotacao sessao) {
-        return sessao.isExpired();
+        if(sessao.isExpired()){
+            sessao.setIsOpen();
+            saveSessaoVotacao(sessao);
+            return true;
+        }
+        return false;
     }
 
     public void addVoto(SessaoVotacao sessao, boolean voto) {
