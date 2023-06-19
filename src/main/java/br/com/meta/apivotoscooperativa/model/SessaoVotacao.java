@@ -32,8 +32,8 @@ public class SessaoVotacao {
     @Column(nullable = false)
     private Boolean isOpen = false;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date expireAt;
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date expireAt;
 
     @Column(name = "pauta_id", insertable = false, updatable = false)
     private Integer pautaId;
@@ -51,19 +51,28 @@ public class SessaoVotacao {
         this.duration = sessaoVotacaoRegisterDto.duracao();
     }
 
-    public SessaoVotacao(Integer id, Integer votosTotal, Integer votosSim, Integer votosNao, Integer duration, Boolean isOpen, Date expireAt) {
+//    public SessaoVotacao(Integer id, Integer votosTotal, Integer votosSim, Integer votosNao, Integer duration, Boolean isOpen, Date expireAt) {
+//        this.id = id;
+//        this.votosTotal = votosTotal;
+//        this.votosSim = votosSim;
+//        this.votosNao = votosNao;
+//        this.duration = duration;
+//        this.isOpen = isOpen;
+//        this.expireAt = expireAt;
+//    }
+    public SessaoVotacao(Integer id, Integer votosTotal, Integer votosSim, Integer votosNao, Integer duration, Boolean isOpen) {
         this.id = id;
         this.votosTotal = votosTotal;
         this.votosSim = votosSim;
         this.votosNao = votosNao;
         this.duration = duration;
         this.isOpen = isOpen;
-        this.expireAt = expireAt;
     }
 
 
-
-
+    public SessaoVotacao(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -105,9 +114,9 @@ public class SessaoVotacao {
     public void setDuration(Integer duration) {
         this.duration = duration;
 
-        if (duration != null) {
-            this.expireAt = new Date(new Date().getTime() + duration * 1000);
-        }
+//        if (duration != null) {
+//            this.expireAt = new Date(new Date().getTime() + duration * 1000);
+//        }
     }
 
     public Boolean getIsOpen() {
@@ -118,13 +127,17 @@ public class SessaoVotacao {
         this.isOpen = !isOpen;
     }
 
-    public Date getExpireAt() {
-        return expireAt;
+    public void setIsOpenFalse(){
+        this.isOpen = false;
     }
 
-    public void setExpireAt(Date expireAt) {
-        this.expireAt = expireAt;
-    }
+//    public Date getExpireAt() {
+//        return expireAt;
+//    }
+
+//    public void setExpireAt(Date expireAt) {
+//        this.expireAt = expireAt;
+//    }
     public Pauta getPauta() {
         return pauta;
     }
@@ -138,8 +151,8 @@ public class SessaoVotacao {
         return pautaId;
     }
 
-    public boolean isExpired() {
-        return new Date().after(this.expireAt);
-    }
+//    public boolean isExpired() {
+//        return new Date().after(this.expireAt);
+//    }
 
 }

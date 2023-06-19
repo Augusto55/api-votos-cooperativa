@@ -39,6 +39,13 @@ public class SessaoVotacaoService {
     @Transactional
     public ResponseEntity<Object> createSessao(Pauta pauta, SessaoVotacao sessao) {
         try {
+            var id = sessaoVotacaoRepository.getLastId();
+            if(id == null){
+                id = 1;
+            } else {
+                id = id+1;
+            }
+            sessao.setId(id);
             sessao.setPauta(pauta);
             pautaService.addSessaoVotacao(pauta, sessao);
             return ResponseEntity.status(HttpStatus.CREATED).body("Sessao " + sessao.getId() + " adicionada com sucesso.\nId da pauta: " + pauta.getId());
@@ -84,10 +91,16 @@ public class SessaoVotacaoService {
         saveSessaoVotacao(sessao);
     }
 
+    @Transactional
+    public void fecharVotacao(SessaoVotacao sessaoVotacao){
+        sessaoVotacao.setIsOpenFalse();
+    }
+
     public String showResultado(SessaoVotacao sessao) {
         Pauta pauta = pautaService.findById(sessao.getPautaId());
         return "SessaoVotacao " + sessao.getId() + " da pauta " + pauta.getTitulo() + " encerrada.\n" +
                 "Votos Sim: " + sessao.getVotosSim() + "\n" +
                 "Votos Nao: " + sessao.getVotosNao() + "\n" +
-                "Votos Total: " + sessao.getVotosTotal();}
+                "Votos Total: " + sessao.getVotosTotal();
+                }
 }
