@@ -39,6 +39,13 @@ public class SessaoVotacaoService {
     @Transactional
     public ResponseEntity<Object> createSessao(Pauta pauta, SessaoVotacao sessao) {
         try {
+            var id = sessaoVotacaoRepository.getLastId();
+            if(id == null){
+                id = 1;
+            } else {
+                id = id+1;
+            }
+            sessao.setId(id);
             sessao.setPauta(pauta);
             pautaService.addSessaoVotacao(pauta, sessao);
             return ResponseEntity.status(HttpStatus.CREATED).body("Sessao " + sessao.getId() + " adicionada com sucesso.\nId da pauta: " + pauta.getId());
@@ -50,10 +57,10 @@ public class SessaoVotacaoService {
     @Transactional
     public ResponseEntity<String> updateSessao(Integer sessaoId, SessaoVotacao sessao) {
         try {
-            sessao.setIsOpen();
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.MINUTE, (int) sessao.getDuration().toMinutes());
-            sessao.setExpireAt(calendar.getTime());
+//            sessao.setIsOpen();
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.add(Calendar.MINUTE, (int) sessao.getDuration().toMinutes());
+//            sessao.setExpireAt(calendar.getTime());
             saveSessaoVotacao(sessao);
             return ResponseEntity.ok("SessaoVotacao with id " + sessaoId + " is now open.");
         } catch (Exception e) {
@@ -65,9 +72,9 @@ public class SessaoVotacaoService {
         return sessao.getIsOpen();
     }
 
-    public boolean isSessaoExpired(SessaoVotacao sessao) {
-        return sessao.isExpired();
-    }
+//    public boolean isSessaoExpired(SessaoVotacao sessao) {
+//        return sessao.isExpired();
+//    }
 
     public void addVoto(SessaoVotacao sessao, boolean voto) {
         if (voto) {
@@ -77,5 +84,10 @@ public class SessaoVotacaoService {
         }
         sessao.setVotosTotal();
         saveSessaoVotacao(sessao);
+    }
+
+    @Transactional
+    public void fecharVotacao(SessaoVotacao sessaoVotacao){
+        sessaoVotacao.setIsOpenFalse();
     }
 }
