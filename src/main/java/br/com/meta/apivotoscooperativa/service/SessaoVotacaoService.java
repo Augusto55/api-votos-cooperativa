@@ -57,10 +57,10 @@ public class SessaoVotacaoService {
     @Transactional
     public ResponseEntity<String> updateSessao(Integer sessaoId, SessaoVotacao sessao) {
         try {
-//            sessao.setIsOpen();
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.add(Calendar.MINUTE, (int) sessao.getDuration().toMinutes());
-//            sessao.setExpireAt(calendar.getTime());
+            sessao.setIsOpen();
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MINUTE, (int) sessao.getDuration().toMinutes());
+            sessao.setExpireAt(calendar.getTime());
             saveSessaoVotacao(sessao);
             return ResponseEntity.ok("SessaoVotacao with id " + sessaoId + " is now open.");
         } catch (Exception e) {
@@ -72,9 +72,14 @@ public class SessaoVotacaoService {
         return sessao.getIsOpen();
     }
 
-//    public boolean isSessaoExpired(SessaoVotacao sessao) {
-//        return sessao.isExpired();
-//    }
+    public boolean isSessaoExpired(SessaoVotacao sessao) {
+        if(sessao.isExpired()){
+            sessao.setIsOpen();
+            saveSessaoVotacao(sessao);
+            return true;
+        }
+        return false;
+    }
 
     public void addVoto(SessaoVotacao sessao, boolean voto) {
         if (voto) {
@@ -90,4 +95,12 @@ public class SessaoVotacaoService {
     public void fecharVotacao(SessaoVotacao sessaoVotacao){
         sessaoVotacao.setIsOpenFalse();
     }
+
+    public String showResultado(SessaoVotacao sessao) {
+        Pauta pauta = pautaService.findById(sessao.getPautaId());
+        return "SessaoVotacao " + sessao.getId() + " da pauta " + pauta.getTitulo() + " encerrada.\n" +
+                "Votos Sim: " + sessao.getVotosSim() + "\n" +
+                "Votos Nao: " + sessao.getVotosNao() + "\n" +
+                "Votos Total: " + sessao.getVotosTotal();
+                }
 }
