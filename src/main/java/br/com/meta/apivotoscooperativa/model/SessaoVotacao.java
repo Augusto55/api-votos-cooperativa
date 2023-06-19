@@ -1,5 +1,6 @@
 package br.com.meta.apivotoscooperativa.model;
 
+import br.com.meta.apivotoscooperativa.dto.SessaoVotacaoRegisterDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -24,15 +25,15 @@ public class SessaoVotacao {
     @Column(nullable = false)
     private Integer votosNao = 0;
 
-    @Column(nullable = false)
+
     private Integer duration = 1;
 
 
     @Column(nullable = false)
     private Boolean isOpen = false;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date expireAt;
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date expireAt;
 
     @Column(name = "pauta_id", insertable = false, updatable = false)
     private Integer pautaId;
@@ -46,18 +47,31 @@ public class SessaoVotacao {
     public SessaoVotacao() {
     }
 
-    public SessaoVotacao(Integer duration) {
-        this.duration = duration;
+    public SessaoVotacao(SessaoVotacaoRegisterDto sessaoVotacaoRegisterDto) {
+        this.duration = sessaoVotacaoRegisterDto.duracao();
     }
 
-    public SessaoVotacao(Integer id, Integer votosTotal, Integer votosSim, Integer votosNao, Integer duration, Boolean isOpen, Date expireAt) {
+//    public SessaoVotacao(Integer id, Integer votosTotal, Integer votosSim, Integer votosNao, Integer duration, Boolean isOpen, Date expireAt) {
+//        this.id = id;
+//        this.votosTotal = votosTotal;
+//        this.votosSim = votosSim;
+//        this.votosNao = votosNao;
+//        this.duration = duration;
+//        this.isOpen = isOpen;
+//        this.expireAt = expireAt;
+//    }
+    public SessaoVotacao(Integer id, Integer votosTotal, Integer votosSim, Integer votosNao, Integer duration, Boolean isOpen) {
         this.id = id;
         this.votosTotal = votosTotal;
         this.votosSim = votosSim;
         this.votosNao = votosNao;
         this.duration = duration;
         this.isOpen = isOpen;
-        this.expireAt = expireAt;
+    }
+
+
+    public SessaoVotacao(Integer id) {
+        this.id = id;
     }
 
     public Integer getId() {
@@ -72,24 +86,24 @@ public class SessaoVotacao {
         return votosTotal;
     }
 
-    public void setVotosTotal(Integer votosTotal) {
-        this.votosTotal = votosTotal;
+    public void setVotosTotal() {
+        this.votosTotal = this.votosTotal + 1;
     }
 
     public Integer getVotosSim() {
         return votosSim;
     }
 
-    public void setVotosSim(Integer votosSim) {
-        this.votosSim = votosSim;
+    public void setVotosSim() {
+        this.votosSim =  this.votosSim + 1;
     }
 
     public Integer getVotosNao() {
         return votosNao;
     }
 
-    public void setVotosNao(Integer votosNao) {
-        this.votosNao = votosNao;
+    public void setVotosNao() {
+        this.votosNao =this.votosNao + 1;
     }
 
     public Duration getDuration() {
@@ -100,9 +114,9 @@ public class SessaoVotacao {
     public void setDuration(Integer duration) {
         this.duration = duration;
 
-        if (duration != null) {
-            this.expireAt = new Date(new Date().getTime() + duration * 1000);
-        }
+//        if (duration != null) {
+//            this.expireAt = new Date(new Date().getTime() + duration * 1000);
+//        }
     }
 
     public Boolean getIsOpen() {
@@ -113,13 +127,17 @@ public class SessaoVotacao {
         this.isOpen = !isOpen;
     }
 
-    public Date getExpireAt() {
-        return expireAt;
+    public void setIsOpenFalse(){
+        this.isOpen = false;
     }
 
-    public void setExpireAt(Date expireAt) {
-        this.expireAt = expireAt;
-    }
+//    public Date getExpireAt() {
+//        return expireAt;
+//    }
+
+//    public void setExpireAt(Date expireAt) {
+//        this.expireAt = expireAt;
+//    }
     public Pauta getPauta() {
         return pauta;
     }
@@ -132,5 +150,9 @@ public class SessaoVotacao {
     public Integer getPautaId() {
         return pautaId;
     }
+
+//    public boolean isExpired() {
+//        return new Date().after(this.expireAt);
+//    }
 
 }

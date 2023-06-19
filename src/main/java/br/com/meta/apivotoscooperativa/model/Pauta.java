@@ -1,6 +1,7 @@
 package br.com.meta.apivotoscooperativa.model;
 
 import br.com.meta.apivotoscooperativa.commons.enums;
+import br.com.meta.apivotoscooperativa.dto.PautaRegisterDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -18,9 +19,8 @@ public class Pauta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
     private String titulo;
-    @Column(nullable = false)
+
     private String descricao;
 
     @Column(name = "resultadoSessao")
@@ -39,6 +39,11 @@ public class Pauta {
         this.titulo = titulo;
         this.descricao = descricao;
         this.resultadoSessao = resultadoSessao;
+    }
+
+    public Pauta(PautaRegisterDto pautaRegisterDto) {
+        this.titulo = pautaRegisterDto.titulo();
+        this.descricao = pautaRegisterDto.descricao();
     }
 
     public Integer getId() {

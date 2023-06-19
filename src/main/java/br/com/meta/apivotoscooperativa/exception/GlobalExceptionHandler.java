@@ -4,9 +4,11 @@ import br.com.meta.apivotoscooperativa.controller.PautaController;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpServerErrorException;
@@ -40,6 +42,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Número de caracteres inválidos");
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException e){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Valor não pode ser nulo");
+    }
+
     @ExceptionHandler(HttpServerErrorException.NotImplemented.class)
     public ResponseEntity<String> handleNotImplementedError(HttpServerErrorException.NotImplemented e) {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(e.getMessage());
@@ -47,7 +59,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(PautaNotFoundException.class)
     public ResponseEntity<String> handlePautaNotFoundException(PautaNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
 }

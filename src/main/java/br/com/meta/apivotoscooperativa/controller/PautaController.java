@@ -1,9 +1,11 @@
 package br.com.meta.apivotoscooperativa.controller;
 
 import br.com.meta.apivotoscooperativa.commons.enums;
+import br.com.meta.apivotoscooperativa.dto.PautaRegisterDto;
 import br.com.meta.apivotoscooperativa.model.Pauta;
 import br.com.meta.apivotoscooperativa.service.PautaService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +37,8 @@ public class PautaController {
 
     @PostMapping("/")
     @Transactional
-    public ResponseEntity<String> adicionarPauta(@RequestBody Pauta pauta) {
+    public ResponseEntity<String> adicionarPauta(@Valid @RequestBody PautaRegisterDto pautaRegisterDto) {
+        Pauta pauta = new Pauta(pautaRegisterDto);
         try {
             pautaService.isValidPauta(pauta);
             if(!Objects.equals(pauta.getResultadoSessao(),enums.PautaStatus.PENDENTE))
