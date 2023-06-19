@@ -38,9 +38,10 @@ public class SessaoVotacaoController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Object> criarSessao(@RequestParam Integer pautaId, @RequestBody SessaoVotacaoRegisterDto sessaoVotacaoRegisterDto) {
+    public ResponseEntity<Object> criarSessao(@RequestBody SessaoVotacaoRegisterDto sessaoVotacaoRegisterDto) {
         Pauta pauta;
-        SessaoVotacao sessao = new SessaoVotacao(sessaoVotacaoRegisterDto);
+        SessaoVotacao sessao = new SessaoVotacao(sessaoVotacaoRegisterDto.duration());
+        Integer pautaId =  sessaoVotacaoRegisterDto.pautaId();
         try {
             pauta = pautaService.findById(pautaId);
         } catch (PautaNotFoundException e) {
@@ -78,11 +79,7 @@ public class SessaoVotacaoController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("O associado não está cadastrado");
             }
 
-//            if (sessaoVotacaoService.isSessaoExpired(sessao) || !sessaoVotacaoService.isSessaoOpen(sessao)) {
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("SessaoVotacao with id " + sessaoId + " is closed.");
-//            }
-
-            if ( !sessaoVotacaoService.isSessaoOpen(sessao)) {
+            if (sessaoVotacaoService.isSessaoExpired(sessao) || !sessaoVotacaoService.isSessaoOpen(sessao)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("SessaoVotacao with id " + sessaoId + " is closed.");
             }
 
@@ -102,14 +99,6 @@ public class SessaoVotacaoController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while voting in SessaoVotacao with id " + sessaoId);
         }
-    }
-
-
-    @PutMapping("{sessaoId}/fechar")
-    public ResponseEntity<String> fecharVotacao(@PathVariable Integer sessaoId){
-        SessaoVotacao sessaoVotacao = sessaoVotacaoService.findById(sessaoId);
-        sessaoVotacaoService.fecharVotacao(sessaoVotacao);
-        return ResponseEntity.status(HttpStatus.OK).body("Votação finalizada");
     }
 
     @PutMapping("/{sessaoId}/resultado")

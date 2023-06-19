@@ -1,5 +1,6 @@
 package br.com.meta.apivotoscooperativa.service;
 
+import br.com.meta.apivotoscooperativa.commons.enums;
 import br.com.meta.apivotoscooperativa.exception.PautaNotFoundException;
 import br.com.meta.apivotoscooperativa.model.Pauta;
 import br.com.meta.apivotoscooperativa.model.SessaoVotacao;
@@ -39,14 +40,12 @@ public class SessaoVotacaoService {
     @Transactional
     public ResponseEntity<Object> createSessao(Pauta pauta, SessaoVotacao sessao) {
         try {
-            var id = sessaoVotacaoRepository.getLastId();
-            if(id == null){
-                id = 1;
-            } else {
-                id = id+1;
-            }
+            var id = sessaoVotacaoRepository.getLastId() != null ? sessaoVotacaoRepository.getLastId() + 1 : 1;
             sessao.setId(id);
             sessao.setPauta(pauta);
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MINUTE, (int) sessao.getDuration().toMinutes());
+            sessao.setExpireAt(calendar.getTime());
             pautaService.addSessaoVotacao(pauta, sessao);
             return ResponseEntity.status(HttpStatus.CREATED).body("Sessao " + sessao.getId() + " adicionada com sucesso.\nId da pauta: " + pauta.getId());
         } catch (Exception e) {
@@ -62,7 +61,12 @@ public class SessaoVotacaoService {
             calendar.add(Calendar.MINUTE, (int) sessao.getDuration().toMinutes());
             sessao.setExpireAt(calendar.getTime());
             saveSessaoVotacao(sessao);
+            Pauta pauta = pautaService.findById(sessao.getPautaId());
+            pauta.setResultadoSessao(enums.PautaStatus.VOTO_ABERTO);
+            pautaService.savePauta(pauta);
             return ResponseEntity.ok("SessaoVotacao with id " + sessaoId + " is now open.");
+        } catch (PautaNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in change SessaoVotacao " + sessaoId + " status.");
         }
@@ -91,13 +95,10 @@ public class SessaoVotacaoService {
         saveSessaoVotacao(sessao);
     }
 
-    @Transactional
-    public void fecharVotacao(SessaoVotacao sessaoVotacao){
-        sessaoVotacao.setIsOpenFalse();
-    }
-
     public String showResultado(SessaoVotacao sessao) {
         Pauta pauta = pautaService.findById(sessao.getPautaId());
+        pauta.setResultadoSessao(sessao.getVotosSim() > sessao.getVotosNao() ? enums.PautaStatus.APROVADA : enums.PautaStatus.REPROVADA);
+        pautaService.savePauta(pauta);
         return "SessaoVotacao " + sessao.getId() + " da pauta " + pauta.getTitulo() + " encerrada.\n" +
                 "Votos Sim: " + sessao.getVotosSim() + "\n" +
                 "Votos Nao: " + sessao.getVotosNao() + "\n" +
