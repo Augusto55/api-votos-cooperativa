@@ -22,12 +22,6 @@ public class Associado {
     public Associado() {
     }
 
-    public Associado(Integer id, String nome) {
-        this.id = id;
-        this.nome = nome;
-        this.cpf = cpf;
-    }
-
     public Associado(AssociadoDto associadoDto) {
         this.id = associadoDto.id();
         this.nome = associadoDto.nome();
@@ -46,15 +40,7 @@ public class Associado {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public String getCpf() {
         return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
     }
 }
