@@ -96,26 +96,25 @@ public class SessaoVotacaoController {
             }
 
             if (sessaoVotacaoService.isSessaoExpired(sessao) || !sessaoVotacaoService.isSessaoOpen(sessao)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("SessaoVotacao with id " + sessaoId + " is closed.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("SessaoVotacao com id " + sessaoId + " está fechada.");
             }
 
             boolean hasVoted = associadoSessaoVotacaoRepository.existsByAssociadoAndSessaoVotacao(associado, sessao);
             if (hasVoted) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Associado with id " + associadoId +
-                        " has already voted in SessaoVotacao with id " + sessaoId);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Associado com id " + associadoId +
+                        " já votou na SessaoVotacao com id " + sessaoId);
             }
 
             sessaoVotacaoService.addVoto(sessao, voto);
             AssociadoSessaoVotacao associadoSessaoVotacao = new AssociadoSessaoVotacao(associado, sessao);
             associadoSessaoVotacaoRepository.save(associadoSessaoVotacao);
 
-            return ResponseEntity.ok("Vote registered successfully.");
+            return ResponseEntity.ok("Vote registered com sucesso.");
         } catch (PautaNotFoundException e) {
             logger.error("Unexpected error voteInSession: ", e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            logger.error("Unexpected error voteInSession: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while voting in SessaoVotacao with id " + sessaoId);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao votar em SessaoVotacao com id " + sessaoId);
         }
     }
 
@@ -129,8 +128,7 @@ public class SessaoVotacaoController {
             logger.error("Unexpected error showResult: ", e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            logger.error("Unexpected error showResult: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while retrieving result for SessaoVotacao with id " + sessaoId);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error ao buscar resultado de SessaoVotacao com id " + sessaoId);
         }
     }
 
