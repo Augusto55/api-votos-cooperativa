@@ -1,6 +1,5 @@
 package br.com.meta.apivotoscooperativa.service;
 
-import br.com.meta.apivotoscooperativa.dto.CPFValidationResponse;
 import br.com.meta.apivotoscooperativa.exception.InvalidCpfException;
 import br.com.meta.apivotoscooperativa.model.Associado;
 import br.com.meta.apivotoscooperativa.dto.AssociadoDto;
@@ -11,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
