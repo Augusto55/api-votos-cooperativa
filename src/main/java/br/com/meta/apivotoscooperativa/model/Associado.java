@@ -2,6 +2,7 @@ package br.com.meta.apivotoscooperativa.model;
 
 import br.com.meta.apivotoscooperativa.dto.AssociadoDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table
@@ -13,6 +14,10 @@ public class Associado {
 
 
     private String nome;
+
+    @Column(unique = true)
+    @Size(min = 11, max = 11)
+    private String cpf;
 
     public Associado() {
     }
@@ -41,5 +46,13 @@ public class Associado {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 }

@@ -32,6 +32,8 @@ public class SessaoVotacaoController {
     @Autowired
     AssociadoSessaoVotacaoRepository associadoSessaoVotacaoRepository;
 
+
+
     @GetMapping("")
     public Iterable<SessaoVotacao> listarSessoes() {
         return sessaoVotacaoService.listAllSessoes();
@@ -77,6 +79,14 @@ public class SessaoVotacaoController {
 
             if (associado == null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("O associado não está cadastrado");
+            }
+            String cpf = associado.getCpf();
+
+            boolean isEligible = associadoService.isValidCPF(cpf);
+
+            if (!isEligible) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Associado " + associado.getNome() +
+                        " is not eligible to vote.");
             }
 
             if (sessaoVotacaoService.isSessaoExpired(sessao) || !sessaoVotacaoService.isSessaoOpen(sessao)) {
