@@ -25,11 +25,13 @@ public class Associado {
     public Associado(Integer id, String nome) {
         this.id = id;
         this.nome = nome;
+        this.cpf = cpf;
     }
 
     public Associado(AssociadoDto associadoDto) {
         this.id = associadoDto.id();
         this.nome = associadoDto.nome();
+        this.cpf = associadoDto.cpf();
     }
 
     public Integer getId() {
