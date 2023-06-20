@@ -33,7 +33,7 @@ public class SessaoVotacaoService {
 
     public SessaoVotacao findById(Integer id) {
         return sessaoVotacaoRepository.findById(id).orElseThrow(
-                () -> new PautaNotFoundException("SessaoVotacao with id " + id + " was not found.")
+                () -> new PautaNotFoundException("SessaoVotacao com id " + id + " não foi encontrada.")
         );
     }
 
@@ -64,11 +64,11 @@ public class SessaoVotacaoService {
             Pauta pauta = pautaService.findById(sessao.getPautaId());
             pauta.setResultadoSessao(enums.PautaStatus.VOTO_ABERTO);
             pautaService.savePauta(pauta);
-            return ResponseEntity.ok("SessaoVotacao with id " + sessaoId + " is now open.");
+            return ResponseEntity.ok("SessaoVotacao com id " + sessaoId + " foi aberta.");
         } catch (PautaNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in change SessaoVotacao " + sessaoId + " status.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao mudar o status da SessaoVotacao " + sessaoId + ".");
         }
     }
 

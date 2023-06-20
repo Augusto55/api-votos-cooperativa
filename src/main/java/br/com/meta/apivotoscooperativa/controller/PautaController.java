@@ -30,7 +30,7 @@ public class PautaController {
             Iterable<Pauta> pautas = pautaService.listAllPautas();
             return ResponseEntity.ok(pautas);
         } catch (Exception e) {
-            logger.error("Unexpected error while listing Pautas: ", e);
+            logger.error("Erro inesperado ao listar pautas: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno do servidor.");
         }
     }
@@ -48,7 +48,7 @@ public class PautaController {
 
             return ResponseEntity.status(HttpStatus.CREATED).body("Pauta adicionada com sucesso.\nId da pauta: " + pauta.getId());
         } catch (Exception e) {
-            logger.error("Unexpected error while adding Pauta: ", e);
+            logger.error("Erro inesperado ao cadastrar pauta: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }

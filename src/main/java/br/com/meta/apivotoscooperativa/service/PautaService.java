@@ -21,7 +21,7 @@ public class PautaService {
 
     public Pauta findById(Integer id) {
         return pautaRepository.findById(id).orElseThrow(
-                () -> new PautaNotFoundException("Pauta with id " + id + " was not found.")
+                () -> new PautaNotFoundException("Pauta com id " + id + " não foi encontrada.")
         );
     }
 
