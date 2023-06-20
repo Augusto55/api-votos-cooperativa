@@ -31,9 +31,17 @@ public class AssociadoService {
         return associadoOptional.orElse(null);
     }
 
+    public String formatCpf(AssociadoDto associado){
+        String cpf = associado.cpf().replaceAll("[^\\sa-zA-Z0-9]", "");
+        return cpf;
+    }
+
     @Transactional
-    public void saveAssociado(AssociadoDto associado){
-        associadoRepository.save(new Associado(associado));
+    public void saveAssociado(AssociadoDto associadoDto){
+        String cpf = formatCpf(associadoDto);
+        Associado associado = new Associado(associadoDto);
+        associado.setCpf(cpf);
+        associadoRepository.save(associado);
     }
 
     public boolean isValidCPF(String cpf) {
