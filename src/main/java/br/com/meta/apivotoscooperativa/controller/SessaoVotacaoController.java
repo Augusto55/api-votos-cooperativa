@@ -12,6 +12,8 @@ import br.com.meta.apivotoscooperativa.service.AssociadoService;
 import br.com.meta.apivotoscooperativa.service.PautaService;
 import br.com.meta.apivotoscooperativa.service.SessaoVotacaoService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,7 @@ public class SessaoVotacaoController {
     @Autowired
     AssociadoSessaoVotacaoRepository associadoSessaoVotacaoRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(PautaController.class);
 
 
     @GetMapping("")
@@ -40,7 +43,7 @@ public class SessaoVotacaoController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Object> criarSessao(@RequestBody SessaoVotacaoRegisterDto sessaoVotacaoRegisterDto) {
+    public ResponseEntity<Object> createSessao(@RequestBody SessaoVotacaoRegisterDto sessaoVotacaoRegisterDto) {
         Pauta pauta;
         SessaoVotacao sessao = new SessaoVotacao(sessaoVotacaoRegisterDto);
         sessaoVotacaoService.saveSessao(sessao);
@@ -48,6 +51,7 @@ public class SessaoVotacaoController {
         try {
             pauta = pautaService.findById(pautaId);
         } catch (PautaNotFoundException e) {
+            logger.error("Unexpected error createSessao: ", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Pauta com id " + pautaId + " não foi encontrada.");
         }
 
@@ -61,13 +65,14 @@ public class SessaoVotacaoController {
             return sessaoVotacaoService.updateSessao(sessaoId, sessao);
 
         } catch (PautaNotFoundException e) {
+            logger.error("Unexpected error openSessao: ", e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
 
     }
 
     @PostMapping("/{sessaoId}/votar")
-    public ResponseEntity<String> votarNaSessao(
+    public ResponseEntity<String> voteInSession(
             @PathVariable Integer sessaoId,
             @Valid @RequestBody SessaoVotacaoVoteDto sessaoVotacaoVoteDto) {
 
@@ -106,8 +111,10 @@ public class SessaoVotacaoController {
 
             return ResponseEntity.ok("Vote registered successfully.");
         } catch (PautaNotFoundException e) {
+            logger.error("Unexpected error voteInSession: ", e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
+            logger.error("Unexpected error voteInSession: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while voting in SessaoVotacao with id " + sessaoId);
         }
     }
@@ -119,8 +126,10 @@ public class SessaoVotacaoController {
             String resultado = sessaoVotacaoService.showResult(sessao);
             return ResponseEntity.ok(resultado);
         } catch (PautaNotFoundException e) {
+            logger.error("Unexpected error showResult: ", e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
+            logger.error("Unexpected error showResult: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while retrieving result for SessaoVotacao with id " + sessaoId);
         }
     }

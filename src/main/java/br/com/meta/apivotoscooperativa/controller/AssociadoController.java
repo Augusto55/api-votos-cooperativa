@@ -4,6 +4,8 @@ import br.com.meta.apivotoscooperativa.model.Associado;
 import br.com.meta.apivotoscooperativa.dto.AssociadoDto;
 import br.com.meta.apivotoscooperativa.service.AssociadoService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +18,22 @@ public class AssociadoController {
     @Autowired
     AssociadoService associadoService;
 
+    private static final Logger logger = LoggerFactory.getLogger(PautaController.class);
+
+
     @GetMapping("")
     public Iterable<Associado> listarAssociados(){
         return associadoService.listAllAssociados();
     }
 
     @PostMapping("")
-    public ResponseEntity<?> salvarAssociado(@Valid @RequestBody AssociadoDto associado) {
-        associadoService.saveAssociado(associado);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Associado cadastrado com sucesso.");
+    public ResponseEntity<?> postAssociado(@Valid @RequestBody AssociadoDto associado) {
+        try {
+            associadoService.saveAssociado(associado);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Associado cadastrado com sucesso.");
+        } catch (Exception e) {
+            logger.error("Unexpected error while saving Associado: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao cadastrar Associado.");
+        }
     }
 }
