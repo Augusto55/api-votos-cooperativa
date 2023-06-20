@@ -23,8 +23,6 @@ public class AssociadoService {
 
     @Autowired
     AssociadoRepository associadoRepository;
-    @Autowired
-    private RestTemplate restTemplate;
 
     public Iterable<Associado> listAllAssociados(){
         return associadoRepository.findAll();
@@ -48,7 +46,7 @@ public class AssociadoService {
 
             if (result.getStatusCode() == HttpStatus.OK) {
                 Map<String, Boolean> body = result.getBody();
-                boolean valid = body != null && Boolean.TRUE.equals(body.get("valid"));
+                boolean valid = ( body != null && Boolean.TRUE.equals(body.get("valid")));
                 if (valid) {
                     return true;
                 } else {

@@ -40,8 +40,7 @@ public class SessaoVotacaoService {
     @Transactional
     public ResponseEntity<Object> createSessao(Pauta pauta, SessaoVotacao sessao) {
         try {
-            var id = sessaoVotacaoRepository.getLastId() != null ? sessaoVotacaoRepository.getLastId() + 1 : 1;
-            sessao.setId(id);
+
             sessao.setPauta(pauta);
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.MINUTE, (int) sessao.getDuration().toMinutes());
@@ -95,7 +94,7 @@ public class SessaoVotacaoService {
         saveSessaoVotacao(sessao);
     }
 
-    public String showResultado(SessaoVotacao sessao) {
+    public String showResult(SessaoVotacao sessao) {
         Pauta pauta = pautaService.findById(sessao.getPautaId());
         pauta.setResultadoSessao(sessao.getVotosSim() > sessao.getVotosNao() ? enums.PautaStatus.APROVADA : enums.PautaStatus.REPROVADA);
         pautaService.savePauta(pauta);
@@ -104,4 +103,8 @@ public class SessaoVotacaoService {
                 "Votos Nao: " + sessao.getVotosNao() + "\n" +
                 "Votos Total: " + sessao.getVotosTotal();
                 }
+
+    public SessaoVotacao saveSessao(SessaoVotacao sessao) {
+        return sessaoVotacaoRepository.save(sessao);
+    }
 }

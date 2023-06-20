@@ -42,7 +42,8 @@ public class SessaoVotacaoController {
     @PostMapping("/")
     public ResponseEntity<Object> criarSessao(@RequestBody SessaoVotacaoRegisterDto sessaoVotacaoRegisterDto) {
         Pauta pauta;
-        SessaoVotacao sessao = new SessaoVotacao(sessaoVotacaoRegisterDto.duration());
+        SessaoVotacao sessao = new SessaoVotacao(sessaoVotacaoRegisterDto);
+        sessaoVotacaoService.saveSessao(sessao);
         Integer pautaId =  sessaoVotacaoRegisterDto.pautaId();
         try {
             pauta = pautaService.findById(pautaId);
@@ -112,10 +113,10 @@ public class SessaoVotacaoController {
     }
 
     @PutMapping("/{sessaoId}/resultado")
-    public ResponseEntity<String> mostrarResultado(@PathVariable Integer sessaoId) {
+    public ResponseEntity<String> showResult(@PathVariable Integer sessaoId) {
         try {
             SessaoVotacao sessao = sessaoVotacaoService.findById(sessaoId);
-            String resultado = sessaoVotacaoService.showResultado(sessao);
+            String resultado = sessaoVotacaoService.showResult(sessao);
             return ResponseEntity.ok(resultado);
         } catch (PautaNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
