@@ -51,7 +51,7 @@ public class SessaoVotacaoController {
         try {
             pauta = pautaService.findById(pautaId);
         } catch (PautaNotFoundException e) {
-            logger.error("Unexpected error createSessao: ", e);
+            logger.error("Erro inesperado ao criar sessão: ", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Pauta com id " + pautaId + " não foi encontrada.");
         }
 
@@ -65,7 +65,7 @@ public class SessaoVotacaoController {
             return sessaoVotacaoService.updateSessao(sessaoId, sessao);
 
         } catch (PautaNotFoundException e) {
-            logger.error("Unexpected error openSessao: ", e);
+            logger.error("Erro inesperado ao criar sessão: ", e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
 
@@ -92,7 +92,7 @@ public class SessaoVotacaoController {
 
             if (!isEligible) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Associado " + associado.getNome() +
-                        " is not eligible to vote.");
+                        " não está apto para votar.");
             }
 
             if (sessaoVotacaoService.isSessaoExpired(sessao) || !sessaoVotacaoService.isSessaoOpen(sessao)) {
@@ -109,9 +109,9 @@ public class SessaoVotacaoController {
             AssociadoSessaoVotacao associadoSessaoVotacao = new AssociadoSessaoVotacao(associado, sessao);
             associadoSessaoVotacaoRepository.save(associadoSessaoVotacao);
 
-            return ResponseEntity.ok("Vote registered com sucesso.");
+            return ResponseEntity.ok("Voto registrado com sucesso.");
         } catch (PautaNotFoundException e) {
-            logger.error("Unexpected error voteInSession: ", e);
+            logger.error("Erro inesperado ao votar na sessão: ", e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao votar em SessaoVotacao com id " + sessaoId);
@@ -125,7 +125,7 @@ public class SessaoVotacaoController {
             String resultado = sessaoVotacaoService.showResult(sessao);
             return ResponseEntity.ok(resultado);
         } catch (PautaNotFoundException e) {
-            logger.error("Unexpected error showResult: ", e);
+            logger.error("Erro inesperado ao mostrar resultado: ", e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error ao buscar resultado de SessaoVotacao com id " + sessaoId);

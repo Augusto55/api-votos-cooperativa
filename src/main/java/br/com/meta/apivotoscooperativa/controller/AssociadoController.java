@@ -32,7 +32,7 @@ public class AssociadoController {
             associadoService.saveAssociado(associado);
             return ResponseEntity.status(HttpStatus.CREATED).body("Associado cadastrado com sucesso.");
         } catch (Exception e) {
-            logger.error("Unexpected error while saving Associado: ", e);
+            logger.error("Erro inesperado ao salvar Associado: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao cadastrar Associado.");
         }
     }
