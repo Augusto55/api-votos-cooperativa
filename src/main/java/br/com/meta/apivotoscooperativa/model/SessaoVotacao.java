@@ -47,16 +47,6 @@ public class SessaoVotacao {
     public SessaoVotacao() {
     }
 
-    public SessaoVotacao(Integer id, Integer votosTotal, Integer votosSim, Integer votosNao, Integer duration, Boolean isOpen, Date expireAt) {
-        this.id = id;
-        this.votosTotal = votosTotal;
-        this.votosSim = votosSim;
-        this.votosNao = votosNao;
-        this.duration = duration;
-        this.isOpen = isOpen;
-        this.expireAt = expireAt;
-    }
-
     public SessaoVotacao(SessaoVotacaoRegisterDto SessaoVotacaoRegisterDto) {
         this.duration = SessaoVotacaoRegisterDto.duration();
         this.pautaId = SessaoVotacaoRegisterDto.pautaId();
@@ -98,15 +88,6 @@ public class SessaoVotacao {
         return Duration.ofMinutes(duration);
     }
 
-
-    public void setDuration(Integer duration) {
-        this.duration = duration;
-
-        if (duration != null) {
-            this.expireAt = new Date(new Date().getTime() + duration * 1000);
-        }
-    }
-
     public Boolean getIsOpen() {
         return isOpen;
     }
@@ -115,15 +96,9 @@ public class SessaoVotacao {
         this.isOpen = !isOpen;
     }
 
-    public Date getExpireAt() {
-        return expireAt;
-    }
 
     public void setExpireAt(Date expireAt) {
         this.expireAt = expireAt;
-    }
-    public Pauta getPauta() {
-        return pauta;
     }
 
     public void setPauta(Pauta pauta) {
