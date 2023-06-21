@@ -22,20 +22,26 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/sessao-votacao")
 public class SessaoVotacaoController {
-    @Autowired
-    SessaoVotacaoService sessaoVotacaoService;
 
-    @Autowired
-    PautaService pautaService;
+    private final SessaoVotacaoService sessaoVotacaoService;
 
-    @Autowired
-    AssociadoService associadoService;
 
-    @Autowired
-    AssociadoSessaoVotacaoRepository associadoSessaoVotacaoRepository;
+    private final PautaService pautaService;
+
+
+    private final AssociadoService associadoService;
+
+
+    private final AssociadoSessaoVotacaoRepository associadoSessaoVotacaoRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(SessaoVotacao.class);
 
+    public SessaoVotacaoController(SessaoVotacaoService sessaoVotacaoService, PautaService pautaService, AssociadoService associadoService, AssociadoSessaoVotacaoRepository associadoSessaoVotacaoRepository) {
+        this.sessaoVotacaoService = sessaoVotacaoService;
+        this.pautaService = pautaService;
+        this.associadoService = associadoService;
+        this.associadoSessaoVotacaoRepository = associadoSessaoVotacaoRepository;
+    }
 
     @GetMapping("")
     public Iterable<SessaoVotacao> listarSessoes() {

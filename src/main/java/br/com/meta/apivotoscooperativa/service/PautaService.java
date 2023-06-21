@@ -12,8 +12,12 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class PautaService {
-    @Autowired
-    private PautaRepository pautaRepository;
+
+    private final PautaRepository pautaRepository;
+
+    public PautaService(PautaRepository pautaRepository) {
+        this.pautaRepository = pautaRepository;
+    }
 
     public Iterable<Pauta> listAllPautas() {
         return pautaRepository.findAll();

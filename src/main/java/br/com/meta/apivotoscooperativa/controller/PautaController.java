@@ -18,9 +18,11 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/pautas")
 public class PautaController {
-    @Autowired
-    private PautaService pautaService;
+    private final PautaService pautaService;
 
+    public PautaController(PautaService pautaService) {
+        this.pautaService = pautaService;
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(PautaController.class);
 
