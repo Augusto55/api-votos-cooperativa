@@ -21,7 +21,8 @@ O projeto utiliza:
 - Spring Boot 3.1.0
 - Java 17
 - PostgreSQL 13.10
-- Hibernate validator
+- Spring Data JPA
+- Hibernate Validator
 
 A API possui as seguintes funcionalidades:
 
