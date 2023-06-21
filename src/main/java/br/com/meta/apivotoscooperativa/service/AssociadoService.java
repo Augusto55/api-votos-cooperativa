@@ -41,7 +41,9 @@ public class AssociadoService {
         String cpf = formatCpf(associadoDto);
         Associado associado = new Associado(associadoDto);
         associado.setCpf(cpf);
-        associadoRepository.save(associado);
+        if (isValidCPF(cpf)){
+            associadoRepository.save(associado);
+        }
     }
 
     public boolean isValidCPF(String cpf) {
