@@ -2,7 +2,6 @@ package br.com.meta.apivotoscooperativa.model;
 
 import br.com.meta.apivotoscooperativa.commons.enums;
 import br.com.meta.apivotoscooperativa.dto.PautaRegisterDto;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -12,7 +11,6 @@ import java.util.List;
 
 @Table
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Pauta {
 
     @Id
