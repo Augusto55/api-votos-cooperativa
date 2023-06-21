@@ -25,7 +25,7 @@ public class SessaoVotacao {
     @Column(nullable = false)
     private Integer votosNao = 0;
 
-
+    @Column(nullable = false)
     private Integer duration = 1;
 
 

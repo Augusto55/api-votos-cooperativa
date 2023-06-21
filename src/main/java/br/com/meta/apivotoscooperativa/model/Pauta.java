@@ -19,11 +19,13 @@ public class Pauta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false)
     private String titulo;
 
+    @Column(nullable = false)
     private String descricao;
 
-    @Column(name = "resultadoSessao")
+    @Column(name = "resultadoSessao", nullable = false)
     @Enumerated(EnumType.STRING)
     private enums.PautaStatus resultadoSessao = enums.PautaStatus.PENDENTE;
 
@@ -58,17 +60,11 @@ public class Pauta {
         return titulo;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
 
     public String getDescricao() {
         return descricao;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
 
     public enums.PautaStatus getResultadoSessao() {
         return resultadoSessao;
@@ -81,11 +77,6 @@ public class Pauta {
     public void addSessaoVotacao(SessaoVotacao sessao) {
         sessaoVotacao.add(sessao);
         sessao.setPauta(this);
-    }
-
-    public void removeSessaoVotacao(SessaoVotacao sessao) {
-        sessaoVotacao.remove(sessao);
-        sessao.setPauta(null);
     }
 
 }
