@@ -12,10 +12,10 @@ public class Associado {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-
+    @Column(nullable = false)
     private String nome;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     @Size(min = 11, max = 11)
     private String cpf;
 
