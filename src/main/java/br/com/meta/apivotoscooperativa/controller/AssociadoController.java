@@ -18,7 +18,7 @@ public class AssociadoController {
     @Autowired
     AssociadoService associadoService;
 
-    private static final Logger logger = LoggerFactory.getLogger(PautaController.class);
+    private static final Logger logger = LoggerFactory.getLogger(Associado.class);
 
 
     @GetMapping("")

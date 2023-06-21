@@ -1,6 +1,5 @@
 package br.com.meta.apivotoscooperativa.exception;
 
-import br.com.meta.apivotoscooperativa.controller.PautaController;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,7 @@ import org.springframework.web.client.HttpServerErrorException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    private static final Logger logger = LoggerFactory.getLogger(PautaController.class);
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(PautaBadRequestException.class)
     public ResponseEntity<String> handlePautaBadRequestException(PautaBadRequestException e) {

@@ -34,7 +34,7 @@ public class SessaoVotacaoController {
     @Autowired
     AssociadoSessaoVotacaoRepository associadoSessaoVotacaoRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(PautaController.class);
+    private static final Logger logger = LoggerFactory.getLogger(SessaoVotacao.class);
 
 
     @GetMapping("")
