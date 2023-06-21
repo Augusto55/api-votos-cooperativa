@@ -19,8 +19,12 @@ import java.util.Optional;
 @Transactional
 public class AssociadoService {
 
-    @Autowired
-    AssociadoRepository associadoRepository;
+
+    private final AssociadoRepository associadoRepository;
+
+    public AssociadoService(AssociadoRepository associadoRepository) {
+        this.associadoRepository = associadoRepository;
+    }
 
     public Iterable<Associado> listAllAssociados(){
         return associadoRepository.findAll();
@@ -31,9 +35,8 @@ public class AssociadoService {
         return associadoOptional.orElse(null);
     }
 
-    public String formatCpf(AssociadoDto associado){
-        String cpf = associado.cpf().replaceAll("[^\\sa-zA-Z0-9]", "");
-        return cpf;
+    private String formatCpf(AssociadoDto associado){
+        return associado.cpf().replaceAll("[^\\sa-zA-Z0-9]", "");
     }
 
     @Transactional

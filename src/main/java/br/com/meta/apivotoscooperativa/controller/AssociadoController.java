@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/associados")
 public class AssociadoController {
 
-    @Autowired
-    AssociadoService associadoService;
+
+    private final AssociadoService associadoService;
+
+    public AssociadoController(AssociadoService associadoService) {
+        this.associadoService = associadoService;
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(Associado.class);
 

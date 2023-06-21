@@ -17,11 +17,16 @@ import java.util.Calendar;
 @Transactional
 public class SessaoVotacaoService {
 
-    @Autowired
-    SessaoVotacaoRepository sessaoVotacaoRepository;
 
-    @Autowired
-    PautaService pautaService;
+    private final SessaoVotacaoRepository sessaoVotacaoRepository;
+
+
+    private final PautaService pautaService;
+
+    public SessaoVotacaoService(SessaoVotacaoRepository sessaoVotacaoRepository, PautaService pautaService) {
+        this.sessaoVotacaoRepository = sessaoVotacaoRepository;
+        this.pautaService = pautaService;
+    }
 
     public Iterable<SessaoVotacao> listAllSessoes(){
         return sessaoVotacaoRepository.findAll();
