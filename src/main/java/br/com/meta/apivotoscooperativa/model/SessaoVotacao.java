@@ -1,9 +1,6 @@
 package br.com.meta.apivotoscooperativa.model;
 
 import br.com.meta.apivotoscooperativa.dto.SessaoVotacaoRegisterDto;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.time.Duration;
@@ -11,7 +8,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "sessao_votacao")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class SessaoVotacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +35,6 @@ public class SessaoVotacao {
     private Integer pautaId;
 
 
-    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pauta_id")
     private Pauta pauta;
@@ -112,6 +107,10 @@ public class SessaoVotacao {
 
     public boolean isExpired() {
         return new Date().after(this.expireAt);
+    }
+
+    public Date getExpireAt() {
+        return expireAt;
     }
 
 }

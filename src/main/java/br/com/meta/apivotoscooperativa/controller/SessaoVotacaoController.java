@@ -46,7 +46,7 @@ public class SessaoVotacaoController {
     public ResponseEntity<Object> createSessao(@RequestBody SessaoVotacaoRegisterDto sessaoVotacaoRegisterDto) {
         Pauta pauta;
         SessaoVotacao sessao = new SessaoVotacao(sessaoVotacaoRegisterDto);
-        sessaoVotacaoService.saveSessao(sessao);
+        sessaoVotacaoService.saveSessaoVotacao(sessao);
         Integer pautaId =  sessaoVotacaoRegisterDto.pautaId();
         try {
             pauta = pautaService.findById(pautaId);
@@ -101,7 +101,7 @@ public class SessaoVotacaoController {
 
             boolean hasVoted = associadoSessaoVotacaoRepository.existsByAssociadoAndSessaoVotacao(associado, sessao);
             if (hasVoted) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Associado com id " + associadoId +
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Associado  " + associado.getNome() +
                         " já votou na SessaoVotacao com id " + sessaoId);
             }
 

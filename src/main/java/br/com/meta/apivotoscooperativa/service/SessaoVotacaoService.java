@@ -103,8 +103,4 @@ public class SessaoVotacaoService {
                 "Votos Nao: " + sessao.getVotosNao() + "\n" +
                 "Votos Total: " + sessao.getVotosTotal();
                 }
-
-    public SessaoVotacao saveSessao(SessaoVotacao sessao) {
-        return sessaoVotacaoRepository.save(sessao);
-    }
 }
