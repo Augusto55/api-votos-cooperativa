@@ -1,0 +1,92 @@
+= API Documentation
+:description: This document provides details about the API endpoints.
+
+== Pauta
+
+=== Listar pautas
+[source]
+----
+GET /pautas
+----
+
+=== Adicionar pautas
+[source]
+----
+POST /pautas/
+Content-Type: application/json
+
+{
+    "descricao": "20k para cada desenvolvedor do time",
+    "titulo": "Aumento de salário"
+}
+----
+
+=== GetById
+[source]
+----
+GET /pautas/1
+----
+
+== SessaoVotacao
+
+=== Listar sessões
+[source]
+----
+GET /sessao-votacao
+----
+
+=== CriarSessao
+[source]
+----
+POST /sessao-votacao/
+Content-Type: application/json
+
+{
+    "duration": 4,
+    "pautaId": 1
+}
+----
+
+=== openSessao
+[source]
+----
+PUT /sessao-votacao/1
+----
+
+=== Votar na sessão
+[source]
+----
+POST /sessao-votacao/1/votar
+Content-Type: application/json
+
+{
+    "associadoId": 1,
+    "voto": true
+}
+----
+
+=== Resultado votação
+[source]
+----
+PUT /sessao-votacao/1/resultado
+----
+
+== Associado
+
+=== Listar associados
+[source]
+----
+GET /associados
+----
+
+=== Cadastrar associado
+[source]
+----
+POST /associados
+Content-Type: application/json
+
+{
+    "nome": "Carrara",
+    "cpf": "03288758059"
+}
+----

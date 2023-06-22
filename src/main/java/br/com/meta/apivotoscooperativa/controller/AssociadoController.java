@@ -18,11 +18,12 @@ public class AssociadoController {
 
     private final AssociadoService associadoService;
 
+
+    private static final Logger logger = LoggerFactory.getLogger(Associado.class);
+
     public AssociadoController(AssociadoService associadoService) {
         this.associadoService = associadoService;
     }
-
-    private static final Logger logger = LoggerFactory.getLogger(Associado.class);
 
 
     @GetMapping("")
