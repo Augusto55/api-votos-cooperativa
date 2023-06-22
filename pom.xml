@@ -82,8 +82,8 @@
 							<attributes>
 								<snippets>${project.build.directory}/generated-snippets</snippets>
 							</attributes>
-							<sourceDirectory>src/docs/asciidoc</sourceDirectory>
-							<outputDirectory>${project.build.directory}/generated-docs</outputDirectory>
+							<sourceDirectory>src/main/resources/docs/asciidoc</sourceDirectory>
+							<outputDirectory>${project.build.directory}/classes/static/docs</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>

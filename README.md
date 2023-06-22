@@ -44,6 +44,5 @@ A API possui as seguintes funcionalidades:
 
 Temos collection no postman: https://www.postman.com/gold-shadow-813189/workspace/votos-cooperativa-api/collection/17815209-41e512b8-87a5-42a3-aabc-12940d404f6f?action=share&creator=26101354
 
-Temos documentação no ASSCIIDOC:
-Para ver a documentação, basta acessar o link:
-    http://localhost:8080/api/v1/swagger-ui.html
+Temos documentação no ASCIIDOC:
+Para ver a documentação, basta acessar o link: http://localhost:8080/docs/api-documentation.html
