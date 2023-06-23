@@ -113,4 +113,11 @@ public class SessaoVotacao {
         return expireAt;
     }
 
+    public void setDuration(Duration duration) {
+        this.duration = (int) duration.toMinutes();
+    }
+
+    public void setPautaId(int pautaId) {
+        this.pautaId = pautaId;
+    }
 }
