@@ -28,6 +28,11 @@ public class Associado {
         this.cpf = associadoDto.cpf();
     }
 
+    public Associado(String nome, String cpf) {
+        this.nome = nome;
+        this.cpf = cpf;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -45,4 +50,8 @@ public class Associado {
     }
 
     public void setCpf(String cpf){ this.cpf = cpf;}
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 }
