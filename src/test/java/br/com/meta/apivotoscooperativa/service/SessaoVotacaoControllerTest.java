@@ -10,8 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
 
 import java.time.Duration;
 
@@ -146,16 +148,12 @@ public class SessaoVotacaoControllerTest {
         SessaoVotacao sessao = new SessaoVotacao();
         sessao.setId(1);
         sessao.setPautaId(1);
-        sessao.setVotosSim();
-        sessao.setVotosSim();
-        sessao.setVotosSim();
-        sessao.setVotosNao();
-        sessao.setVotosNao();
-        sessao.setVotosTotal();
-        sessao.setVotosTotal();
-        sessao.setVotosTotal();
-        sessao.setVotosTotal();
-        sessao.setVotosTotal();
+
+        for (int i = 0; i < 25; i++) {
+            if (i < 15) sessao.setVotosSim();
+            if (i < 10 )sessao.setVotosNao();
+            sessao.setVotosTotal();
+        }
 
         when(sessaoVotacaoService.findById(1)).thenReturn(sessao);
         when(sessaoVotacaoService.showResult(sessao)).thenReturn("Result");
@@ -178,5 +176,38 @@ public class SessaoVotacaoControllerTest {
 
         verify(sessaoVotacaoService, times(1)).findById(1);
         verify(sessaoVotacaoService, never()).showResult(any());
+    }
+
+    @Test
+    void testVoteInSession_InvalidAssociadoId_Null() throws Exception {
+        String requestPayload = "{\"voto\": true}";
+
+        performVoteInSessionWithInvalidData(requestPayload)
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().string("associadoId nao pode ser nulo"));
+    }
+
+    @Test
+    void testVoteInSession_InvalidVoto_Null() throws Exception {
+        String requestPayload = "{\"associadoId\": 1}";
+
+        performVoteInSessionWithInvalidData(requestPayload)
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().string("voto nao pode ser nulo"));
+    }
+
+    private ResultActions performVoteInSessionWithInvalidData(String requestPayload) throws Exception {
+        SessaoVotacao sessao = new SessaoVotacao();
+        sessao.setId(1);
+        sessao.setIsOpen();
+        sessao.setDuration(Duration.ofMinutes(60));
+        sessao.setPautaId(1);
+
+        when(sessaoVotacaoService.findById(1)).thenReturn(sessao);
+        when(associadoService.findById(1)).thenReturn(null);
+
+        return mockMvc.perform(MockMvcRequestBuilders.post("/sessao-votacao/1/votar")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestPayload));
     }
 }
