@@ -1,5 +1,6 @@
 package br.com.meta.apivotoscooperativa.controller;
 
+import br.com.meta.apivotoscooperativa.exception.InvalidCpfException;
 import br.com.meta.apivotoscooperativa.model.Associado;
 import br.com.meta.apivotoscooperativa.dto.AssociadoDto;
 import br.com.meta.apivotoscooperativa.service.AssociadoService;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,6 +37,8 @@ public class AssociadoController {
         try {
             associadoService.saveAssociado(associado);
             return ResponseEntity.status(HttpStatus.CREATED).body("Associado cadastrado com sucesso.");
+        }catch (InvalidCpfException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         } catch (Exception e) {
             logger.error("Erro inesperado ao salvar Associado: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao cadastrar Associado.");

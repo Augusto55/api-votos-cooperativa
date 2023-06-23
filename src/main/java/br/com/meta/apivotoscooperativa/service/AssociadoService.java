@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -42,6 +43,7 @@ public class AssociadoService {
     @Transactional
     public void saveAssociado(AssociadoDto associadoDto){
         String cpf = formatCpf(associadoDto);
+        if(cpf.length() != 11) throw new InvalidCpfException("O cpf do associado deve ter 11 caracteres");
         Associado associado = new Associado(associadoDto);
         associado.setCpf(cpf);
         if (isValidCPF(cpf)){
