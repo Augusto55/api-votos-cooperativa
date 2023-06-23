@@ -16,7 +16,7 @@ public class Associado {
     private String nome;
 
     @Column(unique = true, nullable = false)
-    @Size(min = 11, max = 11)
+    @Size(min = 11, max = 11, message = "O cpf do associado deve ter 11 caracteres")
     private String cpf;
 
     public Associado() {
