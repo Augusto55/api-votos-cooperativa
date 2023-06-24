@@ -37,7 +37,7 @@ public class PautaController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     @Transactional
     public ResponseEntity<String> adicionarPauta(@Valid @RequestBody PautaRegisterDto pautaRegisterDto) {
         Pauta pauta = new Pauta(pautaRegisterDto);

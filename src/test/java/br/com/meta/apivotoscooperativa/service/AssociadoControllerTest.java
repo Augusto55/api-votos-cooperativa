@@ -11,8 +11,10 @@ import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import org.springframework.http.HttpStatus;
@@ -37,14 +39,10 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 
 
-@WebMvcTest(AssociadoController.class)
-
+@SpringBootTest
+@AutoConfigureMockMvc
 class AssociadoControllerTest {
 
-
-// private final AssociadoService associadoService = Mockito.mock(AssociadoService.class);
-
-// private final AssociadoController associadoController = new AssociadoController(associadoService);
 
 
     @Autowired
