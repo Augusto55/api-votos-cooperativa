@@ -36,7 +36,7 @@ public class AssociadoService {
     }
 
     private String formatCpf(AssociadoDto associado){
-        return associado.cpf().replaceAll("[^\\sa-zA-Z0-9]", "");
+        return associado.cpf().replaceAll("[^0-9]", "");
     }
 
     @Transactional
