@@ -8,9 +8,12 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -21,10 +24,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-@WebMvcTest(PautaController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class PautaControllerTest {
 
     @Autowired
@@ -32,6 +35,7 @@ class PautaControllerTest {
 
     @MockBean
     private PautaService pautaService;
+
 
     @Test
     void testListarPautasSuccess() throws Exception {
@@ -80,6 +84,41 @@ class PautaControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("Pauta adicionada com sucesso.\nId da pauta: 1"));
 
         Mockito.verify(pautaService, Mockito.times(1)).savePauta(Mockito.any(Pauta.class));
+    }
+
+    @Test
+    void testAdicionarPautaInvalida() throws Exception {
+
+        String titulo = "Ab";
+        String descricao = "Descrição da nova pauta";
+
+        String requestPayload = "{\"titulo\": \"" + titulo + "\", \"descricao\": \"" + descricao + "\"}";
+
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/pautas")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestPayload))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().string("Titulo da pauta deve ter de 3 a 20 caracteres."));
+
+
+    }
+
+    @Test
+    void testAdicionarDescricaoInvalida() throws Exception {
+
+        String titulo = "Nova pauta";
+        String descricao = "De";
+
+        String requestPayload = "{\"titulo\": \"" + titulo + "\", \"descricao\": \"" + descricao + "\"}";
+
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/pautas")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestPayload))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().string("Descricao da pauta deve ter de 3 a 20 caracteres."));
+
     }
 
 }

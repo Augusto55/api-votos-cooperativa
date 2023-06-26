@@ -3,6 +3,7 @@ package br.com.meta.apivotoscooperativa.model;
 import br.com.meta.apivotoscooperativa.dto.AssociadoDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import org.springframework.stereotype.Component;
 
 @Entity
 @Table
