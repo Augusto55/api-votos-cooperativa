@@ -5,14 +5,20 @@ import br.com.meta.apivotoscooperativa.controller.AssociadoController;
 
 import br.com.meta.apivotoscooperativa.dto.AssociadoDto;
 
+import br.com.meta.apivotoscooperativa.model.Associado;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import org.springframework.http.HttpStatus;
@@ -37,14 +43,10 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 
 
-@WebMvcTest(AssociadoController.class)
-
+@SpringBootTest
+@AutoConfigureMockMvc
 class AssociadoControllerTest {
 
-
-// private final AssociadoService associadoService = Mockito.mock(AssociadoService.class);
-
-// private final AssociadoController associadoController = new AssociadoController(associadoService);
 
 
     @Autowired
@@ -59,7 +61,7 @@ class AssociadoControllerTest {
 
     @Test
 
-    void testPostAssociado_Success() throws Exception {
+    void testPostAssociadoSuccess() throws Exception {
 
         String nome = "João";
 
@@ -87,11 +89,11 @@ class AssociadoControllerTest {
 
     @Test
 
-    void testPostAssociado_Exception() throws Exception {
+    void testPostAssociadoNomeInvalid() throws Exception {
 
         String nome = "J";
 
-        String cpf = "143413414141321313123212adsad@@313";
+        String cpf = "123.456.789-10";
 
 
         String requestPayload = "{\"nome\": \"" + nome + "\", \"cpf\": \"" + cpf + "\"}";
@@ -105,12 +107,41 @@ class AssociadoControllerTest {
 
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
 
-                .andExpect(MockMvcResultMatchers.content().string("O cpf do associado deve ter 11 caracteres"));
+                .andExpect(MockMvcResultMatchers.content().string("O nome do associado deve ter entre 3 e 30 caracteres"));
 
 
         verify(associadoService, never()).saveAssociado(Mockito.any(AssociadoDto.class));
 
     }
+
+//    @Test
+//
+//    void testPostAssociadoCpfInvalido() throws Exception {
+//
+//        String nome = "Joao";
+//        String cpf = "adsad@@313";
+//
+//        AssociadoDto associadoDto = new AssociadoDto(1, nome, cpf);
+//
+//
+//        //String requestPayload = "{\"nome\": \"" + associadoDto.nome() + "\", \"cpf\": \"" + associadoDto.cpf() + "\"}";
+//
+//
+//        mockMvc.perform(MockMvcRequestBuilders.post("/associados")
+//
+//                        .contentType(MediaType.APPLICATION_JSON)
+//
+//                        .content(String.valueOf(associadoDto)))
+//
+//                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+//
+//                .andExpect(MockMvcResultMatchers.content().string("O nome do associado deve ter entre 3 e 30 caracteres"));
+//
+//
+//        verify(associadoService, never()).saveAssociado(Mockito.any(AssociadoDto.class));
+//
+//    }
+
 
 
 

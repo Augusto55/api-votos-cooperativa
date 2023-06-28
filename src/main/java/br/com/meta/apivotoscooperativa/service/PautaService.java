@@ -29,9 +29,14 @@ public class PautaService {
         );
     }
 
-    public void savePauta(Pauta pauta) {
+    public Pauta savePauta(Pauta pauta) {
         pautaRepository.save(pauta);
+
+        Pauta pautaComId = pautaRepository.findById(pauta.getId()).orElse(null);
+
+        return pautaComId;
     }
+
 
     public void isValidPauta(Pauta pauta) throws InvalidPautaException {
         if (pauta == null) {
