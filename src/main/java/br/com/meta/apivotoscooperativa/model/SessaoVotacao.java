@@ -21,7 +21,7 @@ public class SessaoVotacao {
     @Column(nullable = false)
     private Integer votosNao = 0;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Integer duration = 1;
 
 
@@ -43,8 +43,12 @@ public class SessaoVotacao {
     }
 
     public SessaoVotacao(SessaoVotacaoRegisterDto SessaoVotacaoRegisterDto) {
-        this.duration = SessaoVotacaoRegisterDto.duration();
+        this.duration = SessaoVotacaoRegisterDto.duration() != null ? SessaoVotacaoRegisterDto.duration() : duration;
         this.pautaId = SessaoVotacaoRegisterDto.pautaId();
+    }
+
+    public SessaoVotacao(Integer pautaId) {
+        this.pautaId = pautaId;
     }
 
     public Integer getId() {

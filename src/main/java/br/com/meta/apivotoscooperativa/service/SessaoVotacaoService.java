@@ -11,7 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Date;
 
 @Service
 @Transactional
@@ -99,8 +102,12 @@ public class SessaoVotacaoService {
         saveSessaoVotacao(sessao);
     }
 
+
     public String showResult(SessaoVotacao sessao) {
         Pauta pauta = pautaService.findById(sessao.getPautaId());
+        if (sessao.getIsOpen()){
+            sessao.setIsOpen();
+        }
         pauta.setResultadoSessao(sessao.getVotosSim() > sessao.getVotosNao() ? enums.PautaStatus.APROVADA : enums.PautaStatus.REPROVADA);
         pautaService.savePauta(pauta);
         return "SessaoVotacao " + sessao.getId() + " da pauta " + pauta.getTitulo() + " encerrada.\n" +

@@ -3,6 +3,7 @@ package br.com.meta.apivotoscooperativa.service;
 import br.com.meta.apivotoscooperativa.commons.enums;
 import br.com.meta.apivotoscooperativa.model.Pauta;
 import br.com.meta.apivotoscooperativa.repository.PautaRepository;
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,12 +11,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
 
 import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
+@AutoConfigureMockMvc
 public class PautaServiceTest {
 
     @Mock
@@ -24,10 +29,6 @@ public class PautaServiceTest {
     @InjectMocks
     private PautaService pautaService;
 
-    @BeforeEach
-    public void init() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     public void testListAllPautas() {
@@ -37,9 +38,10 @@ public class PautaServiceTest {
 
         Mockito.when(pautaRepository.findAll()).thenReturn(pautas);
 
-        Iterable<Pauta> returnedPautas = pautaService.listAllPautas();
+        var returnedPautas = pautaService.listAllPautas();
 
-        Assertions.assertNotNull(returnedPautas);
         Assertions.assertEquals(pautas, returnedPautas);
+        Assertions.assertNotNull(returnedPautas);
+
     }
 }

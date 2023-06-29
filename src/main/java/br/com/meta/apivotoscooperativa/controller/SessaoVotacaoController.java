@@ -88,6 +88,7 @@ public class SessaoVotacaoController {
             SessaoVotacao sessao = sessaoVotacaoService.findById(sessaoId);
             Associado associado = associadoService.findById(associadoId);
 
+
             if (associado == null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("O associado não está cadastrado");
             }

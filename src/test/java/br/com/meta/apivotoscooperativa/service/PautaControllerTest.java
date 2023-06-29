@@ -62,9 +62,10 @@ class PautaControllerTest {
         Mockito.verify(pautaService, Mockito.times(1)).listAllPautas();
     }
 
+
+
     @Test
     void testAdicionarPautaSuccess() throws Exception {
-
         Pauta pauta = new Pauta();
         pauta.setTitulo("Nova Pauta");
         pauta.setDescricao("Descrição da nova pauta");
@@ -76,15 +77,18 @@ class PautaControllerTest {
             return pautaSalva;
         });
 
-
         mockMvc.perform(MockMvcRequestBuilders.post("/pautas")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"titulo\": \"Nova Pauta\", \"descricao\": \"Descrição da nova pauta\"}"))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.content().string("Pauta adicionada com sucesso.\nId da pauta: 1"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.titulo").value("Nova Pauta"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.descricao").value("Descrição da nova pauta"));
 
         Mockito.verify(pautaService, Mockito.times(1)).savePauta(Mockito.any(Pauta.class));
     }
+
+
 
     @Test
     void testAdicionarPautaInvalida() throws Exception {
