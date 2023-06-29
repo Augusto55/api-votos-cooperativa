@@ -47,7 +47,7 @@ public class SessaoVotacaoController {
         return sessaoVotacaoService.listAllSessoes();
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<Object> createSessao(@RequestBody SessaoVotacaoRegisterDto sessaoVotacaoRegisterDto) {
         Pauta pauta;
         SessaoVotacao sessao = new SessaoVotacao(sessaoVotacaoRegisterDto);
