@@ -14,7 +14,6 @@ import br.com.meta.apivotoscooperativa.service.SessaoVotacaoService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +47,7 @@ public class SessaoVotacaoController {
         return sessaoVotacaoService.listAllSessoes();
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<Object> createSessao(@RequestBody SessaoVotacaoRegisterDto sessaoVotacaoRegisterDto) {
         Pauta pauta;
         SessaoVotacao sessao = new SessaoVotacao(sessaoVotacaoRegisterDto);
@@ -88,6 +87,7 @@ public class SessaoVotacaoController {
         try {
             SessaoVotacao sessao = sessaoVotacaoService.findById(sessaoId);
             Associado associado = associadoService.findById(associadoId);
+
 
             if (associado == null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("O associado não está cadastrado");

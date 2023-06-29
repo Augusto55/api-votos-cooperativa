@@ -6,7 +6,6 @@ import br.com.meta.apivotoscooperativa.model.Pauta;
 import br.com.meta.apivotoscooperativa.model.SessaoVotacao;
 import br.com.meta.apivotoscooperativa.repository.PautaRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,9 +28,13 @@ public class PautaService {
         );
     }
 
-    public void savePauta(Pauta pauta) {
+    @Transactional
+    public Pauta savePauta(Pauta pauta) {
         pautaRepository.save(pauta);
+
+        return pautaRepository.findById(pauta.getId()).orElse(null);
     }
+
 
     public void isValidPauta(Pauta pauta) throws InvalidPautaException {
         if (pauta == null) {
@@ -56,6 +59,7 @@ public class PautaService {
         }
     }
 
+    @Transactional
     public void addSessaoVotacao(Pauta pauta, SessaoVotacao sessaoVotacao) {
         pauta.addSessaoVotacao(sessaoVotacao);
         pautaRepository.save(pauta);

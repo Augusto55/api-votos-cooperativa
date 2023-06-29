@@ -16,7 +16,7 @@ public class Associado {
     private String nome;
 
     @Column(unique = true, nullable = false)
-    @Size(min = 11, max = 11)
+    @Size(min = 11, max = 11, message = "O cpf do associado deve ter 11 caracteres")
     private String cpf;
 
     public Associado() {
@@ -26,6 +26,11 @@ public class Associado {
         this.id = associadoDto.id();
         this.nome = associadoDto.nome();
         this.cpf = associadoDto.cpf();
+    }
+
+    public Associado(String nome, String cpf) {
+        this.nome = nome;
+        this.cpf = cpf;
     }
 
     public Integer getId() {
@@ -45,4 +50,8 @@ public class Associado {
     }
 
     public void setCpf(String cpf){ this.cpf = cpf;}
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 }
