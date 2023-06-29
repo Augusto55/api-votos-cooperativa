@@ -51,6 +51,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Valor não pode ser nulo");
     }
 
+
     @ExceptionHandler(HttpServerErrorException.NotImplemented.class)
     public ResponseEntity<String> handleNotImplementedError(HttpServerErrorException.NotImplemented e) {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(e.getMessage());

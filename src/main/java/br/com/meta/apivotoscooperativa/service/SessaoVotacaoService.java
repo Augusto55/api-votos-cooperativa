@@ -35,6 +35,7 @@ public class SessaoVotacaoService {
         return sessaoVotacaoRepository.findAll();
     }
 
+    @Transactional
     public SessaoVotacao saveSessaoVotacao(SessaoVotacao sessaoVotacao){
         return sessaoVotacaoRepository.save(sessaoVotacao);
     }

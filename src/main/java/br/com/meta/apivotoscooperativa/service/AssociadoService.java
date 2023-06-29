@@ -40,9 +40,13 @@ public class AssociadoService {
         return associado.cpf().replaceAll("[^0-9]", "");
     }
 
-    @Transactional
+
     public void saveAssociado(AssociadoDto associadoDto){
         String cpf = formatCpf(associadoDto);
+        var search = associadoRepository.getAssociadoWithCpf(cpf);
+        if(search!=null){
+            throw new RuntimeException("Já existe um associado com esse CPF");
+        }
         if(cpf.length() != 11) throw new InvalidCpfException("O cpf do associado deve ter 11 caracteres");
         Associado associado = new Associado(associadoDto);
         associado.setCpf(cpf);

@@ -29,6 +29,7 @@ public class PautaService {
         );
     }
 
+    @Transactional
     public Pauta savePauta(Pauta pauta) {
         pautaRepository.save(pauta);
 
@@ -61,6 +62,7 @@ public class PautaService {
         }
     }
 
+    @Transactional
     public void addSessaoVotacao(Pauta pauta, SessaoVotacao sessaoVotacao) {
         pauta.addSessaoVotacao(sessaoVotacao);
         pautaRepository.save(pauta);

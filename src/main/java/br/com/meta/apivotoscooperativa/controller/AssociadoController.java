@@ -4,6 +4,7 @@ import br.com.meta.apivotoscooperativa.exception.InvalidCpfException;
 import br.com.meta.apivotoscooperativa.model.Associado;
 import br.com.meta.apivotoscooperativa.dto.AssociadoDto;
 import br.com.meta.apivotoscooperativa.service.AssociadoService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ public class AssociadoController {
         return associadoService.listAllAssociados();
     }
 
+    @Transactional
     @PostMapping("")
     public ResponseEntity<?> postAssociado(@Valid @RequestBody AssociadoDto associado) {
         try {
